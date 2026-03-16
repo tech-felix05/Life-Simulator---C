@@ -1,0 +1,46 @@
+#ifndef CRIMINI_H
+#define CRIMINI_H
+#include "player.h"
+
+void identityCard(struct Nation *n, char *nS, char *cS);
+void gym(struct Giocatore *s);
+void righting(struct Giocatore *l);
+void newFriends(struct Giocatore *fr);
+void girlResearch(struct Giocatore *g, int *counter, int *son, int *fl);
+void eat(struct Giocatore *c);
+void nightClub(struct Giocatore *night, int *addict, int *dead);
+void chooseWork(struct Giocatore *s, int hasDegree);
+void war(struct Giocatore *w, int militarChoice);
+void nuclearProbabilitiesGeneral(struct Giocatore *n, int weaponN);
+void verifyRetired(struct Giocatore *p, int *year);
+void music(struct Giocatore *m);
+void timeWithFriends(struct Giocatore *f, int *ex);
+void timeWithGirfriend(struct Giocatore *grl, int *cson);
+void probDiseases(struct Giocatore *mental, int *rolls, int *dis);
+void rehab(struct Giocatore *rb, int *add, int *pror, int *ludp);
+void shop(struct Giocatore *sh, int tl);
+void emigrate(struct Giocatore *em, int *cntlove, int cnt, int *pris, int *snt);
+void hackingProbabilities(struct Giocatore *hack, int *jail);
+void blackJack(struct Giocatore *black, int *ludo);
+void crimes(struct Giocatore *crim, int *crimCount, int *ratingCrim, int *prs, int *kd, int *lvCnt, int *sCnt, int *proe);
+void prisionJail(struct Giocatore *prj);
+void sentenceRewiew(struct Giocatore *stR, int *sProb, int *prss);
+void medicJail(struct Giocatore *medic);
+void mess(struct Giocatore *sqeeze, int *pseNt);
+void coniugalVisit(struct Giocatore *coniug);
+void letter(struct Giocatore *lett);
+void escape(struct Giocatore *esc, int *sEsca, int *prsE);
+void physicDiseases(struct Giocatore *dis, int *al, int *yPD, int *rlPD);
+void takeCarLicense(struct Giocatore *car, int *cle);
+void hospital(struct Giocatore *osp, int *vivo);
+void prisionGym(struct Giocatore *palgym, int *vivoOmorto, int mortoOvivo);
+void controlYearProximative(struct Giocatore *control, int *yearsOfDiseases, int *patLicense, int *rhb, int *brkGirlProb, int *flong, int *lvc, int *mtb, int *wrk);
+void mafiaLetter(struct Giocatore *maf);
+void annualNetSons(struct Giocatore *son, int *snc);
+void workAnnualNet(struct Giocatore *netWork, int *krw, int *svdYear);
+void college(struct Giocatore *stud, int *uniCt);
+
+
+
+
+#endif
