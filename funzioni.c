@@ -2544,3 +2544,51 @@ void college(struct Giocatore *stud, int *uniCt)
         yearCurrent = 0;
     }
 }
+
+void checkWork(struct Giocatore *check, int *workLife, int *probWar, int *prisionCheck, int *probEvent, int *probNuclear,
+               int *weaponNuclearBuild, int *workProbHack)
+{
+    if (strcmp(check->work, "Militare") == 0 && check->healht <= 40)
+    {
+        printf(RED BOLD "\n\n*** SEI STATO CONGEDATO ***\n" RESET);
+        strcpy(check->work, "Disoccupato");
+        (*workLife) = 0;
+    }
+    else
+    {
+        if (strcmp(check->work, "Militare") == 0 && probWar == 1 && prisionCheck == 0)
+        {
+            printf(RED BOLD "\n\n*** SEI STATO CHIAMATO IN MISSIONE, [AFGHANISTAN] ***\n" RESET);
+            war(check, probEvent);
+
+            if (probWar == 3)
+            {
+                printf(RED BOLD "\n\n*** SEI STATO CHIAMATO IN MISSIONE, [IRAQ] ***\n" RESET);
+                war(check, probEvent);
+            }
+
+            if (probWar == 10)
+            {
+                printf(RED BOLD "\n\n*** SEI STATO CHIAMATO IN MISSIONE, [DAGHESTAN] ***\n" RESET);
+                war(check, probEvent);
+            }
+        }
+    }
+    if (strcmp(check->work, "Ingegnere Nucleare") == 0 && check->iQ < 90){
+            printf(RED BOLD "\n\n*** SEI STATO LICENZIATO ***\n" RESET);
+            strcpy(check->work, "Disoccupato");
+        } else {
+            if (strcmp(check->work, "Ingegnere Nucleare") == 0 && probNuclear == 2 && prisionCheck == 0){
+                nuclearProbabilitiesGeneral(check, probNuclear);
+            }
+        }
+
+        if (strcmp(check->work, "Etichal Hacker") == 0 && check->iQ < 90){
+            printf(RED BOLD "\n\n*** SEI STATO LICENZIATO ***\n", RESET);
+            strcpy(check->work, "Disoccupato");
+        } else {
+            if (strcmp(check->work, "Etichal Hacker") == 0 && workProbHack == 2 && prisionCheck == 0){
+                hackingProbabilities(check, &prisionCheck);
+            }
+        }
+}

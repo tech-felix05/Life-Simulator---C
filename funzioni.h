@@ -39,6 +39,8 @@ void mafiaLetter(struct Giocatore *maf);
 void annualNetSons(struct Giocatore *son, int *snc);
 void workAnnualNet(struct Giocatore *netWork, int *krw, int *svdYear);
 void college(struct Giocatore *stud, int *uniCt);
+void checkWork(struct Giocatore *check, int *workLife, int *probWar, int *prisionCheck, int *probEvent, int *probNuclear,
+               int *weaponNuclearBuild, int *workProbHack);
 
 
 

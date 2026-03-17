@@ -271,6 +271,7 @@ int main()
         if (uniCount == 1 && prision == 1) { printf(RED "\n\n*** SMESSO DI FREQUENTARE, SEI IN PRIGIONE ***\n\n" RESET); uniCount = 0; }
         if (work == 0) { chooseWork(self, 1); }
 
+        checkWork(self, &work, warProbabilies, &prision, event, nuclearProbability, nuclearWeaponBuild, hackWorkProb);
         
     }
 }
