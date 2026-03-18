@@ -259,7 +259,7 @@ int main()
         self[0].age += 1;
         self[0].currentPortfolio += self[0].salary;
 
-        controlYearProximative(self, &yearsOfPhysicDiseases, &carLicense, &rehab, &breakGirlProb, &fling, &loverCount, &mentalDiseases, &work);
+        controlYearProximative(self, &yearsOfPhysicDiseases, &carLicense, &rehabOfDiseas, &breakGirlProb, &fling, &loverCount, &mentalDiseases, &work);
 
         if (probPhysicDiseases <= 20) {physicDiseases(self, &alive, &yearsOfPhysicDiseases, &rollPhysicDiseases);}
         if (criminal >= 50 && self[0].age > 15) {mafiaLetter(self);}
@@ -269,9 +269,9 @@ int main()
         if (retired == 1) { verifyRetired(self, &servedYears); printf("\n\n*** PENSIONE: [%d] \n\n", self[0].currentPortfolio); }
         if (uniCount == 1) { college(self, &uniCount); }
         if (uniCount == 1 && prision == 1) { printf(RED "\n\n*** SMESSO DI FREQUENTARE, SEI IN PRIGIONE ***\n\n" RESET); uniCount = 0; }
-        if (work == 0) { chooseWork(self, 1); }
+        if (work == 0 && uniCount == 1) { chooseWork(self, 1); }
 
-        checkWork(self, &work, warProbabilies, &prision, event, nuclearProbability, nuclearWeaponBuild, hackWorkProb);
+        checkWork(self, &work, &warProbabilies, &prision, &event, &nuclearProbability, &nuclearWeaponBuild, &hackWorkProb);
         
     }
 }

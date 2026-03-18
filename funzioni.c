@@ -398,7 +398,7 @@ void nightClub(struct Giocatore *night, int *addict, int *dead)
 void chooseWork(struct Giocatore *s, int hasDegree)
 {
     int job;
-    if (hasDegree)
+    if (hasDegree == 1)
     {
         printf(YELLOW BOLD "\nLAVORI PER LAUREATI:\n1. Jr App Developer (30000$)\n2. Ingegnere Nucleare (48000$)\n3. Professore (36000$)\n4. Etichal Hacker (10000$)\nScelta: " RESET);
         scanf("%d", &job);
@@ -2415,69 +2415,16 @@ void prisionGym(struct Giocatore *palgym, int *vivoOmorto, int mortoOvivo)
 void controlYearProximative(struct Giocatore *control, int *yearsOfDisease, int *patLicense, int *rhb,
                             int *brkGirlProb, int *flong, int *lvc, int *mtb, int *wrk)
 {
-
-    if (control->age >= 18 && patLicense == 0)
+    if (control->age >= 18 && *patLicense == 0)
     {
-        int car = 0;
+        int carChoice = 0;
         printf("\n\n--- VUOI PRENDERE LA PATENTE? (1=Si, 0=No) ---\nScelta: ");
-        scanf("%d", &car);
+        scanf("%d", &carChoice);
 
-        if (car == 1)
+        if (carChoice == 1)
         {
-            takeCarLicense(control, &patLicense);
+            takeCarLicense(control, patLicense);
         }
-    }
-
-    if (yearsOfDisease >= 1 && rhb < yearsOfDisease)
-    {
-        control->healht += 2;
-        control->fertility += 3;
-        control->happiness += 3;
-        control->mentalHealth += 4;
-        control->iQ += 6;
-    }
-    else
-    {
-        rhb = 0;
-        yearsOfDisease = 0;
-    }
-
-    if (brkGirlProb == 2 && lvc == 1 && flong >= 1)
-    {
-        printf(RED BOLD "\n\n*** LA TUA RAGAZZA TI HA SCOPERTO MENTRE LA TRADIVI, ORA SEI SINGLE ***\n\n" RESET);
-        lvc = 0;
-    }
-
-    if (control->age > 23 && wrk == 0)
-    {
-        control->happiness -= 5;
-        control->healht -= 4;
-        control->mentalHealth -= 10;
-        (*mtb) += 1;
-    }
-    else if (control->age > 23 && lvc < 1)
-    {
-        control->happiness -= 6;
-        control->healht -= 7;
-        control->mentalHealth -= 10;
-        (*mtb) += 1;
-    }
-    else if (control->friends < 1)
-    {
-        control->happiness -= 6;
-        control->healht -= 2;
-        control->fertility -= 1;
-        control->mentalHealth -= 4;
-        (*mtb) += 1;
-    }
-
-    if (control->mentalHealth < 0)
-    {
-        control->mentalHealth = 0;
-    }
-    else if (control->mentalHealth > 100)
-    {
-        control->mentalHealth = 100;
     }
 }
 
@@ -2526,7 +2473,7 @@ void workAnnualNet(struct Giocatore *netWork, int *krw, int *svdYear)
     if (netWork->age > temp)
     {
         printf("*** SEI ANDATO IN PENSIONE ***\n\n");
-        (*krw) = 0;
+        *krw = 0;
     }
 }
 
@@ -2540,7 +2487,7 @@ void college(struct Giocatore *stud, int *uniCt)
     if (yearCurrent >= 5)
     {
         printf(BLUE "\n\n\n*** CONGRATULAZIONI! TI SEI LAUREATO! ***\n" RESET);
-        (*uniCt) = 0;
+        *uniCt = 1;
         yearCurrent = 0;
     }
 }
@@ -2552,43 +2499,45 @@ void checkWork(struct Giocatore *check, int *workLife, int *probWar, int *prisio
     {
         printf(RED BOLD "\n\n*** SEI STATO CONGEDATO ***\n" RESET);
         strcpy(check->work, "Disoccupato");
-        (*workLife) = 0;
+        *workLife = 0;
     }
     else
     {
-        if (strcmp(check->work, "Militare") == 0 && probWar == 1 && prisionCheck == 0)
+        // --- GESTIONE MILITARE ---
+        if (strcmp(check->work, "Militare") == 0 && (*probWar == 1) && (*prisionCheck == 0))
         {
             printf(RED BOLD "\n\n*** SEI STATO CHIAMATO IN MISSIONE, [AFGHANISTAN] ***\n" RESET);
-            war(check, probEvent);
+            // CORRETTO: Aggiunto * per passare il valore intero
+            war(check, *probEvent);
 
-            if (probWar == 3)
+            // CORRETTO: Aggiunto * per confrontare il valore e non l'indirizzo
+            if (*probWar == 3)
             {
                 printf(RED BOLD "\n\n*** SEI STATO CHIAMATO IN MISSIONE, [IRAQ] ***\n" RESET);
-                war(check, probEvent);
+                war(check, *probEvent);
             }
 
-            if (probWar == 10)
+            if (*probWar == 10)
             {
                 printf(RED BOLD "\n\n*** SEI STATO CHIAMATO IN MISSIONE, [DAGHESTAN] ***\n" RESET);
-                war(check, probEvent);
+                war(check, *probEvent);
+            }
+        }
+
+        // --- GESTIONE INGEGNERE NUCLEARE ---
+        if (strcmp(check->work, "Ingegnere Nucleare") == 0 && check->iQ < 90)
+        {
+            printf(RED BOLD "\n\n*** SEI STATO LICENZIATO ***\n" RESET);
+            strcpy(check->work, "Disoccupato");
+        }
+        else
+        {
+            // CORRETTO: Aggiunto * davanti a probNuclear e prisionCheck
+            if (strcmp(check->work, "Ingegnere Nucleare") == 0 && (*probNuclear) == 2 && (*prisionCheck == 0))
+            {
+                // CORRETTO: Aggiunto * per passare il valore intero
+                nuclearProbabilitiesGeneral(check, *probNuclear);
             }
         }
     }
-    if (strcmp(check->work, "Ingegnere Nucleare") == 0 && check->iQ < 90){
-            printf(RED BOLD "\n\n*** SEI STATO LICENZIATO ***\n" RESET);
-            strcpy(check->work, "Disoccupato");
-        } else {
-            if (strcmp(check->work, "Ingegnere Nucleare") == 0 && probNuclear == 2 && prisionCheck == 0){
-                nuclearProbabilitiesGeneral(check, probNuclear);
-            }
-        }
-
-        if (strcmp(check->work, "Etichal Hacker") == 0 && check->iQ < 90){
-            printf(RED BOLD "\n\n*** SEI STATO LICENZIATO ***\n", RESET);
-            strcpy(check->work, "Disoccupato");
-        } else {
-            if (strcmp(check->work, "Etichal Hacker") == 0 && workProbHack == 2 && prisionCheck == 0){
-                hackingProbabilities(check, &prisionCheck);
-            }
-        }
 }
