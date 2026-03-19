@@ -34,14 +34,19 @@ void physicDiseases(struct Giocatore *dis, int *al, int *yPD, int *rlPD);
 void takeCarLicense(struct Giocatore *car, int *cle);
 void hospital(struct Giocatore *osp, int *vivo);
 void prisionGym(struct Giocatore *palgym, int *vivoOmorto, int mortoOvivo);
-void controlYearProximative(struct Giocatore *control, int *yearsOfDiseases, int *patLicense, int *rhb, int *brkGirlProb, int *flong, int *lvc, int *mtb, int *wrk);
+void controlYearProximative(struct Giocatore *control, int *patLicense, int *brkGirlProb, int *flong, int *lvc, int *mtb, int *wrk, int *pris);
 void mafiaLetter(struct Giocatore *maf);
 void annualNetSons(struct Giocatore *son, int *snc);
 void workAnnualNet(struct Giocatore *netWork, int *krw, int *svdYear);
 void college(struct Giocatore *stud, int *uniCt);
-void checkWork(struct Giocatore *check, int *workLife, int *probWar, int *prisionCheck, int *probEvent, int *probNuclear,
-               int *weaponNuclearBuild, int *workProbHack);
-
+void checkWork(struct Giocatore *check, int *workLife, int *probWar, int *prisionCheck, int *probEvent, int *probNuclear, int *weaponNuclearBuild, int *workProbHack);
+void controlHealth(struct Giocatore *healthControl);
+void ludo(struct Giocatore *ludp);
+void controlMentalDiseases(struct Giocatore *controlMtb);
+void mentalDis(struct Giocatore *mtbControl);
+void healthAndAddiction(struct Giocatore *addictAndHealth, int *add);
+void goWithGirlfriend(struct Giocatore *go);
+void workOrCollege(struct Giocatore *workOrColl, int *countUni, int *yearCurr, int *workkk, int *yearsSvd);
 
 
 

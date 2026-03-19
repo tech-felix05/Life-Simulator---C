@@ -2412,18 +2412,58 @@ void prisionGym(struct Giocatore *palgym, int *vivoOmorto, int mortoOvivo)
     }
 }
 
-void controlYearProximative(struct Giocatore *control, int *yearsOfDisease, int *patLicense, int *rhb,
-                            int *brkGirlProb, int *flong, int *lvc, int *mtb, int *wrk)
+void controlYearProximative(struct Giocatore *control, int *patLicense, int *brkGirlProb, int *flong, int *lvc, int *mtb, int *wrk, int *pris)
 {
-    if (control->age >= 18 && *patLicense == 0)
+    if ((*pris) == 0)
     {
-        int carChoice = 0;
-        printf("\n\n--- VUOI PRENDERE LA PATENTE? (1=Si, 0=No) ---\nScelta: ");
-        scanf("%d", &carChoice);
 
-        if (carChoice == 1)
+        if (control->age >= 18 && *patLicense == 0)
         {
-            takeCarLicense(control, patLicense);
+            int carChoice = 0;
+            printf("\n\n--- VUOI PRENDERE LA PATENTE? (1=Si, 0=No) ---\nScelta: ");
+            scanf("%d", &carChoice);
+
+            if (carChoice == 1)
+            {
+                takeCarLicense(control, patLicense);
+            }
+        }
+    }
+
+    if ((*pris) == 0)
+    {
+
+        if (control->age > 23 && *wrk == 0)
+        {
+            printf("\n\n*** CONTINUERAI A SOFFRIRE DI ANSIA SE NON RIESCI A TROVARE LAVORO ***\n\n");
+            control->happiness -= 5;
+            control->healht -= 4;
+            control->mentalHealth -= 4;
+            (*mtb)++;
+        }
+        else if (control->age > 23 && *lvc < 1)
+        {
+
+            printf("\n\n*** CONTINUI A ESSERE TRISTE SENZA UNA PARTNER ***\n\n");
+            control->happiness -= 6;
+            control->healht -= 4;
+            control->mentalHealth -= 4;
+            (*mtb)++;
+        }
+        else if (control->friends < 1 && control->age > 14)
+        {
+
+            printf("\n\n*** NON HAI AMICI :( ***\n\n");
+            control->happiness -= 6;
+            control->healht -= 4;
+            control->mentalHealth -= 3;
+            (*mtb)++;
+        }
+
+        if (*brkGirlProb == 2 && *lvc == 1 && *flong >= 1)
+        {
+            printf(RED BOLD "\n\n*** LA TUA RAGAZZA TI HA SCOPERTO MENTRE LA TRADIVI, ORA SEI SINGLE ***\n\n" RESET);
+            (*lvc) = 0;
         }
     }
 }
@@ -2431,7 +2471,7 @@ void controlYearProximative(struct Giocatore *control, int *yearsOfDisease, int 
 void mafiaLetter(struct Giocatore *maf)
 {
 
-    if (strcmp(maf->work, "Mafioso") != 0)
+    if (strcmp(maf->work, "Mafioso") != 0 && maf->age > 15)
     {
         int lifeStyle = 0;
 
@@ -2503,14 +2543,11 @@ void checkWork(struct Giocatore *check, int *workLife, int *probWar, int *prisio
     }
     else
     {
-        // --- GESTIONE MILITARE ---
         if (strcmp(check->work, "Militare") == 0 && (*probWar == 1) && (*prisionCheck == 0))
         {
             printf(RED BOLD "\n\n*** SEI STATO CHIAMATO IN MISSIONE, [AFGHANISTAN] ***\n" RESET);
-            // CORRETTO: Aggiunto * per passare il valore intero
             war(check, *probEvent);
 
-            // CORRETTO: Aggiunto * per confrontare il valore e non l'indirizzo
             if (*probWar == 3)
             {
                 printf(RED BOLD "\n\n*** SEI STATO CHIAMATO IN MISSIONE, [IRAQ] ***\n" RESET);
@@ -2524,7 +2561,6 @@ void checkWork(struct Giocatore *check, int *workLife, int *probWar, int *prisio
             }
         }
 
-        // --- GESTIONE INGEGNERE NUCLEARE ---
         if (strcmp(check->work, "Ingegnere Nucleare") == 0 && check->iQ < 90)
         {
             printf(RED BOLD "\n\n*** SEI STATO LICENZIATO ***\n" RESET);
@@ -2532,12 +2568,83 @@ void checkWork(struct Giocatore *check, int *workLife, int *probWar, int *prisio
         }
         else
         {
-            // CORRETTO: Aggiunto * davanti a probNuclear e prisionCheck
             if (strcmp(check->work, "Ingegnere Nucleare") == 0 && (*probNuclear) == 2 && (*prisionCheck == 0))
             {
-                // CORRETTO: Aggiunto * per passare il valore intero
                 nuclearProbabilitiesGeneral(check, *probNuclear);
             }
         }
     }
+}
+
+void controlHealth(struct Giocatore *healthControl){
+
+    if (healthControl->healht > 100) { healthControl->healht = 100; }
+    else if (healthControl->healht < 0) { healthControl->healht = 0; }
+    else if (healthControl->age <= 13) { healthControl->iQ += 3; }
+
+}
+
+void ludo(struct Giocatore *ludp){
+
+    ludp->currentPortfolio -= 1000;
+    ludp->mentalHealth -= 3;
+
+}
+
+void controlMentalDiseases(struct Giocatore *controlMtb){
+
+    controlMtb->happiness -= 5;
+    controlMtb->mentalHealth -= 2;
+
+}
+
+void mentalDis(struct Giocatore *mtbControl){
+
+    if (mtbControl->mentalHealth < 20){
+
+        mtbControl->healht -= 5;
+        printf(RED BOLD "[MALATTIA] La tua mente sta consumando il tuo corpo...\n" RESET);
+    }
+
+}
+
+void healthAndAddiction(struct Giocatore *addictAndHealth, int *add){
+
+    if (*add == 1) { addictAndHealth->healht -= 7; addictAndHealth->iQ -= 5; addictAndHealth->fertility -= 4; addictAndHealth->mentalHealth -= 5; }
+        else { if (addictAndHealth->age < 25) { addictAndHealth->iQ += 2; addictAndHealth->fertility += 4; addictAndHealth->healht += 5; } if (addictAndHealth->age >= 35) {addictAndHealth->fertility -=1;} if (addictAndHealth->age >=70) { addictAndHealth->iQ -= 3; addictAndHealth->fertility -= 4; addictAndHealth->healht -=3; } }
+        if (addictAndHealth->iQ < 0) { addictAndHealth->iQ = 0; }
+        if (addictAndHealth->healht > 100) { addictAndHealth->healht = 100; }
+        if (addictAndHealth->mentalHealth > 100) { addictAndHealth->mentalHealth = 100; } else if (addictAndHealth->mentalHealth < 0) { addictAndHealth->mentalHealth = 0; }
+
+}
+
+void goWithGirlfriend(struct Giocatore *go){
+
+    printf(YELLOW "\nLa tua ragazza vuole uscire. (1=Si, 0=No): " RESET);
+    int sn;
+    
+    scanf("%d", &sn); while(getchar() != '\n');
+
+    if(sn) printf(GREEN "*** AVETE PASSATO TEMPO INSIEME ***!\n" RESET);
+
+}
+
+void workOrCollege(struct Giocatore *workOrColl, int *countUni, int *yearCurr, int *workkk, int *yearsSvd){
+
+    int c18 = 0;
+
+    printf(GREEN BOLD "\nHAI 18 ANNI! 1.Cerca Lavoro | 2.Iscriviti al College: " RESET);
+            scanf("%d", &c18); while(getchar() != '\n');
+            if (c18 == 2) {
+                printf(YELLOW BOLD "1.Ingegneria Nucleare | 2.Computer Science\n" RESET);
+                printf(YELLOW "Inserisci facolta': " RESET);
+                fgets(workOrColl->subject, 20, stdin);
+                workOrColl->subject[strcspn(workOrColl->subject, "\n")] = '\0';
+                *countUni = 1; *yearCurr = 0;
+                college(workOrColl, yearCurr);
+            } else {
+                chooseWork(&workOrColl[0], 0);
+                *workkk = 1; *yearsSvd = 0;
+            }
+
 }
