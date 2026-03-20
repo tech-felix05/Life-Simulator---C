@@ -44,6 +44,7 @@ int main()
     int carLicense = 0;
     int car = 0;
     int retired = 0;
+    int diplomated = 0;
 
     char nomeScelto[50];
     char cognomeScelto[50];
@@ -95,14 +96,14 @@ int main()
         if (self[0].mentalHealth > 100) { self[0].mentalHealth = 100; }
         if (self[0].mentalHealth < 0) { self[0].mentalHealth = 0; }
         if (probPhysicDiseases <= 20) {physicDiseases(self, &alive, &yearsOfPhysicDiseases, &rollPhysicDiseases);}
-        if (criminal >= 50 && self[0].age > 15) {mafiaLetter(self);}
+        if (criminal >= 50 && self[0].age > 15) { mafiaLetter(self, &criminal); }
         if (ludopatic == 1) {self[0].currentPortfolio -= 1000; self[0].mentalHealth -= 3;}
         if (sonsCount >= 1) { annualNetSons(self, &sonsCount); }
         if (work == 1) { workAnnualNet(self, &work , &servedYears); }
         if (retired == 1 && prision == 0) { verifyRetired(self, &servedYears); printf("\n\n*** PENSIONE: [%d] \n\n", self[0].currentPortfolio); }
-        if (uniCount == 0 && prision == 0 && self[0].age >= 18) { workOrCollege(self, &uniCount, &yearCurrent, &work, &servedYears); }
+        if (uniCount == 0 && prision == 0 && self[0].age >= 18) { workOrCollege(self, &uniCount, &yearCurrent, &work, &servedYears, &diplomated); }
         if (uniCount == 1 && prision == 1) { printf(RED "\n\n*** SMESSO DI FREQUENTARE, SEI IN PRIGIONE ***\n\n" RESET); uniCount = 0; }
-        if (work == 0 && uniCount == 1) { chooseWork(self, 1); }
+        if (self[0].age == 23 && uniCount == 1) { chooseWork(self, 1, &work); }
         if (ludopatic == 1) { ludo(self); }
         if (mentalDiseases == 1) { controlMentalDiseases(self); }
         if ((rand() % 100 < 8) && (mentalDiseases == 3)) { probDiseases(self, &rollCauses, &mentalDiseases); }
@@ -110,10 +111,9 @@ int main()
         if (probabilities == 3 && loverCount == 1) { goWithGirlfriend(self); }
 
         controlYearProximative(self, &carLicense, &breakGirlProb, &fling, &loverCount, &mentalDiseases, &work, &prision);
-        mafiaLetter(self);
         mentalDis(self);
 
-        if (self[0].age >= 18 && uniCount == 0 && prision == 0 && work == 0) { workOrCollege(self, &uniCount, &yearCurrent, &work, &servedYears); }
+        if (self[0].age >= 18 && uniCount == 0 && prision == 0 && work == 0) { workOrCollege(self, &uniCount, &yearCurrent, &work, &servedYears, &diplomated); }
 
         printf(YELLOW "\n--- STATISTICHE %d ANNI ---" RESET, self[0].age);
         printf(RED "\nSaldo: %.2f$ (+%.2f$/anno) | Lavoro: %s | Salute Fisica: %d | Malattie: %d" RESET, self[0].currentPortfolio, self[0].salary, self[0].work, self[0].healht, diseases);
@@ -126,10 +126,12 @@ int main()
         self[0].age += 1;
         self[0].currentPortfolio += self[0].salary;
 
+        if (diplomated == 0 && uniCount == 1) { college(self, &uniCount, &yearCurrent, &diplomated); }
+
         int choice;
         printf(BLUE BOLD "\n\n--- SE NON SEI IN PRIGIONE PUOI FARE QUESTE AZIONI ---\n\n" RESET);
         printf("\n\nAZIONI: 1.Sport | 2.Lettura | 3.Musica | 4.Amici | 5.Ragazze | 6.Night Club |\n7.Passa del tempo con amici | 8.Passa del tempo con la tua ragazza | 9.Rehab\n");
-        printf("10.Shopping | 11.Emigrare | 12.Casinò (age >= 18) | 13.Compi Crimini\n\n");
+        printf("10.Shopping | 11.Emigrare | 12.Casinò (age >= 18) | 13.Compi Crimini\nScelta: \n");
         scanf("%d", &choice);
 
         if (choice == 1) gym(self);

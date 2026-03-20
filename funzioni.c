@@ -395,42 +395,53 @@ void nightClub(struct Giocatore *night, int *addict, int *dead)
         printf("Tutto tranquillo.\n");
 }
 
-void chooseWork(struct Giocatore *s, int hasDegree)
+void chooseWork(struct Giocatore *s, int hasDegree, int *worke)
 {
     int job;
     if (hasDegree == 1)
     {
         printf(YELLOW BOLD "\nLAVORI PER LAUREATI:\n1. Jr App Developer (30000$)\n2. Ingegnere Nucleare (48000$)\n3. Professore (36000$)\n4. Etichal Hacker (10000$)\nScelta: " RESET);
         scanf("%d", &job);
-        if (job == 1 || job == 4 && strcmp(s->subject, "Computer Science") != 0)
+
+        if (job == 1 || job == 4)
+        {
+            if (strcmp(s->subject, "Computer Science") != 0)
+            {
+                printf(BLUE BOLD "\n\n*** NON HAI LA LAUREA ADATTA ***\n\n" RESET);
+            }
+            
+        }
+        if (job == 2 && strcmp(s->subject, "Ingegnere Nuc.") != 0)
         {
             printf(BLUE BOLD "\n\n*** NON HAI LA LAUREA ADATTA ***\n\n" RESET);
         }
-        if (job == 2 && strcmp(s->subject, "Ingegnere Nucleare") != 0)
-        {
-            printf(BLUE BOLD "\n\n*** NON HAI LA LAUREA ADATTA ***\n\n" RESET);
-        }
-        if (job == 1)
-        {
+        if (job == 1 && strcmp(s->subject, "Computer Science") == 0)
+        {            
             strcpy(s->work, "Developer");
             s->salary = 30000;
+            *worke = 1;
         }
-        else if (job == 2)
+        else if (job == 2 && strcmp(s->subject, "Ingegnere Nuc.") == 0)
         {
-            strcpy(s->work, "Ingegnere");
+            strcpy(s->work, "Ingegnere Nuc.");
             s->salary = 48000;
+            *worke = 1;
         }
-        else if (job == 3)
+        else if (job == 3 && hasDegree == 1)
         {
             strcpy(s->work, "Professore");
             s->salary = 16000;
+            *worke = 1;
         }
-        else
+        else if (job == 4 && strcmp(s->subject, "Computer Science") == 0)
         {
             strcpy(s->work, "Etichal Hacker");
             s->salary = 25000;
+            *worke = 1;
         }
+
     }
+
     else
     {
         printf(YELLOW BOLD "\nLAVORI DISPONIBILI:\n1. Cassiere (1700$)\n2. Militare (3700$)\n3. Operaio (2300$)\nScelta: " RESET);
@@ -747,14 +758,14 @@ void verifyRetired(struct Giocatore *p, int *year)
         p->salary -= salary;
     }
 
-    if (strcmp(p->work, "Ingeniere Nucleare") == 0)
+    if (strcmp(p->work, "Ingeniere Nu.") == 0)
     {
         int salary = 0;
         salary = (*year / p->salary) * 100;
         p->salary -= salary;
     }
 
-    if (strcmp(p->work, "Jr App Developer") == 0)
+    if (strcmp(p->work, "Developer") == 0)
     {
         int salary = 0;
         salary = (*year / p->salary) * 100;
@@ -999,10 +1010,10 @@ void probDiseases(struct Giocatore *mental, int *rolls, int *dis)
         mental->happiness -= 40;
         break;
     default:
-        return; // Esci se non c'è match
+        return;
     }
 
-    *dis = 1; // Attiva lo stato "Malato" nel main
+    *dis = 1;
 }
 
 void rehab(struct Giocatore *rb, int *add, int *pror, int *ludp)
@@ -1408,7 +1419,7 @@ void emigrate(struct Giocatore *em, int *cntlove, int cnt, int *pris, int *snt)
     }
 }
 
-void hackingProbabilities(struct Giocatore *hack, int *jail)
+void hackingProbabilities(struct Giocatore *hack)
 {
     int rollHacking = (rand() % 4) + 1;
     int payload = 0;
@@ -2265,83 +2276,6 @@ void physicDiseases(struct Giocatore *dis, int *al, int *yPD, int *rlPD)
         printf(GREEN BOLD "*** ATTACCO DI PANICO ***\n\n" RESET);
     }
 
-    switch (posComa)
-    {
-    case 1:
-        dis->age += 1;
-        dis->healht -= 20;
-        dis->fertility -= 15;
-        dis->mentalHealth -= 30;
-        break;
-    case 2:
-        dis->age += 2;
-        dis->healht -= 20;
-        dis->fertility -= 15;
-        dis->mentalHealth -= 30;
-        break;
-    case 3:
-        dis->age += 3;
-        dis->healht -= 20;
-        dis->fertility -= 15;
-        dis->mentalHealth -= 30;
-        break;
-    case 4:
-        dis->age += 4;
-        dis->healht -= 20;
-        dis->fertility -= 15;
-        dis->mentalHealth -= 30;
-        break;
-    case 5:
-        dis->age += 5;
-        dis->healht -= 20;
-        dis->fertility -= 15;
-        dis->mentalHealth -= 30;
-        break;
-    case 6:
-        dis->age += 6;
-        dis->healht -= 20;
-        dis->fertility -= 15;
-        dis->mentalHealth -= 30;
-        break;
-    case 7:
-        dis->age += 7;
-        dis->healht -= 20;
-        dis->fertility -= 15;
-        dis->mentalHealth -= 30;
-        break;
-    case 8:
-        dis->age += 8;
-        dis->healht -= 20;
-        dis->fertility -= 15;
-        dis->mentalHealth -= 30;
-        break;
-    case 9:
-        dis->age += 9;
-        dis->healht -= 20;
-        dis->fertility -= 15;
-        dis->mentalHealth -= 30;
-        break;
-    case 10:
-        dis->age += 10;
-        dis->healht -= 20;
-        dis->fertility -= 15;
-        dis->mentalHealth -= 30;
-        break;
-    case 11:
-        dis->age += 11;
-        dis->healht -= 20;
-        dis->fertility -= 15;
-        dis->mentalHealth -= 30;
-        break;
-    case 12:
-        dis->age += 12;
-        dis->healht -= 20;
-        dis->fertility -= 15;
-        dis->mentalHealth -= 30;
-        break;
-    default:
-        break;
-    }
 }
 
 void takeCarLicense(struct Giocatore *car, int *cle)
@@ -2390,6 +2324,8 @@ void takeCarLicense(struct Giocatore *car, int *cle)
         {
             printf(GREEN BOLD "\n\n*** CONGRATULAZIONI! HAI RICEVUTO LA PATENTE DI GUIDA ***\n\n" RESET);
             (*cle) = 1;
+        } else {
+            printf(RED BOLD "\n\n*** BOCCIATO ***\n\n" RESET);
         }
     }
 }
@@ -2468,10 +2404,10 @@ void controlYearProximative(struct Giocatore *control, int *patLicense, int *brk
     }
 }
 
-void mafiaLetter(struct Giocatore *maf)
+void mafiaLetter(struct Giocatore *maf, int *crime)
 {
 
-    if (strcmp(maf->work, "Mafioso") != 0 && maf->age > 15)
+    if (*crime == 50 && maf->age > 15)
     {
         int lifeStyle = 0;
 
@@ -2510,25 +2446,24 @@ void workAnnualNet(struct Giocatore *netWork, int *krw, int *svdYear)
     temp = 50 - (*svdYear);
     printf("\n\n*** LAVORO: [%s]\nANNI RIMANENTI PER PENSIONE: [%d] ***\n\n", netWork->work, temp);
 
-    if (netWork->age > temp)
+    if (temp == 0)
     {
         printf("*** SEI ANDATO IN PENSIONE ***\n\n");
         *krw = 0;
     }
 }
 
-void college(struct Giocatore *stud, int *uniCt)
+void college(struct Giocatore *stud, int *uniCt, int *yct, int *dipl)
 {
-    int yearCurrent = 0;
+    (*yct)++;
+    printf(GREEN "\n[College] Stai studiando %s. Anno %d di 5\n" RESET, stud->subject, *yct);
 
-    yearCurrent++;
-    printf(GREEN "\n[College] Stai studiando %s. Anno %d di 5\n" RESET, stud->subject, yearCurrent);
-
-    if (yearCurrent >= 5)
+    if (*yct >= 5)
     {
         printf(BLUE "\n\n\n*** CONGRATULAZIONI! TI SEI LAUREATO! ***\n" RESET);
         *uniCt = 1;
-        yearCurrent = 0;
+        *dipl = 1;
+        *yct = 0;
     }
 }
 
@@ -2561,16 +2496,29 @@ void checkWork(struct Giocatore *check, int *workLife, int *probWar, int *prisio
             }
         }
 
-        if (strcmp(check->work, "Ingegnere Nucleare") == 0 && check->iQ < 90)
+        if (strcmp(check->work, "Ingegnere Nuc.") == 0 && check->iQ < 90)
         {
             printf(RED BOLD "\n\n*** SEI STATO LICENZIATO ***\n" RESET);
             strcpy(check->work, "Disoccupato");
         }
         else
         {
-            if (strcmp(check->work, "Ingegnere Nucleare") == 0 && (*probNuclear) == 2 && (*prisionCheck == 0))
+            if (strcmp(check->work, "Ingegnere Nuc.") == 0 && (*probNuclear) == 2 && (*prisionCheck == 0))
             {
                 nuclearProbabilitiesGeneral(check, *probNuclear);
+            }
+        }
+
+        if (strcmp(check->work, "Etichal Hacker") == 0 && check->iQ < 87)
+        {
+            printf(RED BOLD "\n\n*** SEI STATO LICENZIATO ***\n" RESET);
+            strcpy(check->work, "Disoccupato");
+        }
+        else
+        {
+            if (strcmp(check->work, "Etichal Hacker") == 0 && *workProbHack == 2)
+            {
+                hackingProbabilities(check);
             }
         }
     }
@@ -2629,7 +2577,7 @@ void goWithGirlfriend(struct Giocatore *go){
 
 }
 
-void workOrCollege(struct Giocatore *workOrColl, int *countUni, int *yearCurr, int *workkk, int *yearsSvd){
+void workOrCollege(struct Giocatore *workOrColl, int *countUni, int *yearCurr, int *workkk, int *yearsSvd, int *dipp){
 
     int c18 = 0;
 
@@ -2641,9 +2589,9 @@ void workOrCollege(struct Giocatore *workOrColl, int *countUni, int *yearCurr, i
                 fgets(workOrColl->subject, 20, stdin);
                 workOrColl->subject[strcspn(workOrColl->subject, "\n")] = '\0';
                 *countUni = 1; *yearCurr = 0;
-                college(workOrColl, yearCurr);
+                college(workOrColl, countUni, yearCurr, dipp);
             } else {
-                chooseWork(&workOrColl[0], 0);
+                chooseWork(&workOrColl[0], 0, workkk);
                 *workkk = 1; *yearsSvd = 0;
             }
 
