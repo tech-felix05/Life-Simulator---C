@@ -27,14 +27,14 @@ void prisionJail(struct Giocatore *prj);
 void sentenceRewiew(struct Giocatore *stR, int *sProb, int *prss);
 void medicJail(struct Giocatore *medic);
 void mess(struct Giocatore *sqeeze, int *pseNt);
-void coniugalVisit(struct Giocatore *coniug);
+void coniugalVisit(struct Giocatore *coniug, int *girl);
 void letter(struct Giocatore *lett);
 void escape(struct Giocatore *esc, int *sEsca, int *prsE);
 void physicDiseases(struct Giocatore *dis, int *al, int *yPD, int *rlPD);
 void takeCarLicense(struct Giocatore *car, int *cle);
 void hospital(struct Giocatore *osp, int *vivo);
 void prisionGym(struct Giocatore *palgym, int *vivoOmorto, int mortoOvivo);
-void controlYearProximative(struct Giocatore *control, int *patLicense, int *brkGirlProb, int *flong, int *lvc, int *mtb, int *wrk, int *pris);
+void controlYearProximative(struct Giocatore *control, int *patLicense, int *brkGirlProb, int *flong, int *lvc, int *mtb, int *wrk, int *pris, int *al);
 void mafiaLetter(struct Giocatore *maf, int *crime);
 void annualNetSons(struct Giocatore *son, int *snc);
 void workAnnualNet(struct Giocatore *netWork, int *krw, int *svdYear);
@@ -47,7 +47,9 @@ void mentalDis(struct Giocatore *mtbControl);
 void healthAndAddiction(struct Giocatore *addictAndHealth, int *add);
 void goWithGirlfriend(struct Giocatore *go);
 void workOrCollege(struct Giocatore *workOrColl, int *countUni, int *yearCurr, int *workkk, int *yearsSvd, int *dipp);
-
+void addToHead(struct Node** head, int *age);
+struct Node* createNode(int *new_expression);
+void freeList(struct Node* head);
 
 
 #endif

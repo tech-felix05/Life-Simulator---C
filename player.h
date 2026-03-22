@@ -21,4 +21,9 @@ struct Nation {
     double annualBirth;
 };
 
+struct Node {
+    int expression;
+    struct Node* next;
+};
+
 #endif

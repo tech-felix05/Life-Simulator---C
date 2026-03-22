@@ -314,28 +314,28 @@ void nightClub(struct Giocatore *night, int *addict, int *dead)
 {
     int num = (rand() % 100) + 1;
     int roll = (rand() % 100) + 1;
-    int acc;
+    int acc = 0;
     printf(BLUE BOLD "\nSei al Blue Point Club! (Evento: %d)\n" RESET, num);
     if (num > 55 && num <= 65)
     {
         printf(YELLOW "\nOfferta: Moscow Mule. Accetti? (1=Si, 0=No): " RESET);
         scanf("%d", &acc);
-        while (getchar() != '\n')
-            ;
-        if (acc && *addict == 1)
+
+        while (getchar() != '\n');
+        if (acc == 1 && *addict == 1)
         {
             if (roll <= 10)
                 *dead = 0;
             else
                 printf(BOLD "*** HAI BECUTO ALCOHOL ***\n" RESET);
         }
-        if (acc && *addict == 0)
+        if (acc == 1 && *addict == 0)
         {
             if (roll <= 20)
                 *addict = 1;
             printf(RED BOLD "*** SEI DIPENDENTE DA ALCOHOL ***\n" RESET);
         }
-        if (acc)
+        if (acc == 1)
         {
             if (roll <= 10)
                 *dead = 0;
@@ -345,22 +345,22 @@ void nightClub(struct Giocatore *night, int *addict, int *dead)
     {
         printf("Offerta: NEVE. Accetti? (1=Si, 0=No): ");
         scanf("%d", &acc);
-        while (getchar() != '\n')
-            ;
-        if (acc && *addict == 1)
+
+        while (getchar() != '\n');
+        if (acc == 1 && *addict == 1)
         {
             if (roll <= 20)
                 *dead = 0;
             else
                 printf(BOLD "*** HAI PIPPATO ***\n" RESET);
         }
-        if (acc && *addict == 0)
+        if (acc == 1 && *addict == 0)
         {
             if (roll <= 40)
                 *addict = 1;
             printf(RED BOLD "*** SEI DIPENDENTE DA COCA ***\n" RESET);
         }
-        if (acc)
+        if (acc == 1)
         {
             if (roll <= 20)
                 *dead = 0;
@@ -370,22 +370,22 @@ void nightClub(struct Giocatore *night, int *addict, int *dead)
     {
         printf(RED BOLD "Offerta: HERO. Accetti? (1=Si, 0=No): " RESET);
         scanf("%d", &acc);
-        while (getchar() != '\n')
-            ;
-        if (acc && *addict == 1)
+
+        while (getchar() != '\n');
+        if (acc == 1 && *addict == 1)
         {
             if (roll <= 40)
                 *dead = 0;
             else
                 printf(BOLD "*** HAI FATTO USO DI HERO ***\n" RESET);
         }
-        if (acc && *addict == 0)
+        if (acc == 1 && *addict == 0)
         {
             if (roll <= 60)
                 *addict = 1;
             printf(RED BOLD "*** SEI DIPENDENTE DA HERO ***\n" RESET);
         }
-        if (acc)
+        if (acc == 1)
         {
             if (roll <= 40)
                 *dead = 0;
@@ -1308,6 +1308,9 @@ void shop(struct Giocatore *sh, int tl)
 
 void emigrate(struct Giocatore *em, int *cntlove, int cnt, int *pris, int *snt)
 {
+    if (em->age < 18) { printf(RED "\n\n*** NON SEI MAGGIORENNE ***\n\n" RESET); return; }
+    if (em->currentPortfolio < 800) { printf(RED "\n\n*** NON HAI ABBASTANZA SOLDI ***\n\n" RESET); return; }
+
     int newp = 0;
     int illegal = 0;
     int ilprob = (rand() % 2) + 1;
@@ -1567,6 +1570,10 @@ void hackingProbabilities(struct Giocatore *hack)
 
 void blackJack(struct Giocatore *black, int *ludo)
 {
+
+    if (black->age < 18) { printf(RED "\n\n*** NON SEI MAGGIORENNE **\n\n" RESET); return; }
+    if (black->currentPortfolio < 800) { printf(RED "\n\n*** NON HAI ABBASTANZA SOLDI ***\n\n" RESET); return; }
+
     int lose = 1;
     int manoG[10], manoB[10]; // Array per contenere fino a 10 carte
     int nG = 0, nB = 0;       // Contatori per quante carte hanno in mano
@@ -2133,18 +2140,18 @@ void mess(struct Giocatore *sqeeze, int *pseNt)
     }
 }
 
-void coniugalVisit(struct Giocatore *coniug)
+void coniugalVisit(struct Giocatore *coniug, int *girl)
 {
-    printf(RED BOLD "\n\n--- VISITA CONIUGALE ---\n\n" RESET);
+    if (*girl >= 1) { printf(RED BOLD "\n\n--- VISITA CONIUGALE ---\n\n" RESET);
     printf(GREEN BOLD "*** HAI RIVISTO LA TUA RAGAZZA ***\n\n" RESET);
     printf(YELLOW BOLD "*** TROVATE IL MODO DI AVVICINARVI E VI SCATENATE ***\n\n" RESET);
     coniug->happiness += 5;
     coniug->mentalHealth += 5;
 
-    if (coniug->fertility >= 50)
-    {
-        printf(GREEN BOLD "--- ORA ASPETTI UN FIGLIO ---\n\n" RESET);
-    }
+    if (coniug->fertility >= 50) { printf(GREEN BOLD "--- ORA ASPETTI UN FIGLIO ---\n\n" RESET); } }
+
+    else { printf(YELLOW "\n\n*** NON HAI UNA RAGAZZA ***\n\n" RESET); }
+    
 }
 
 void letter(struct Giocatore *lett)
@@ -2250,17 +2257,17 @@ void physicDiseases(struct Giocatore *dis, int *al, int *yPD, int *rlPD)
     if (*rlPD == 1)
     {
         printf(RED BOLD "*** SEI ANDATO IN OSPEDALE PER UN ANEURISMA, NON SONO RIUSCITI A SALVARTI IN TEMPO ***\n\n" RESET);
-        (*al) = 0;
+        *al = 0;
     }
     else if (*rlPD == 2)
     {
         printf(BLUE BOLD "*** SEI STATO PORTATO IN OSPEDALE DOPO AVER SBATTUTO FORTEMENTE LA TESTA, SEI IN COMA PER [%d] ANNI ***\n\n" RESET, posComa);
-        (*yPD) = 5;
+        *yPD = 5;
     }
     else if (*rlPD == 3)
     {
         printf(BLUE BOLD "*** SEI STATO MORSO DA UN PITBULL NEI LUOGHI INTIMI, POTRESTI RIMANERE INFERTILE ***\n\n" RESET);
-        (*yPD) = 3;
+        *yPD = 3;
         dis->fertility -= 55;
         dis->healht -= 20;
         dis->happiness -= 30;
@@ -2268,7 +2275,7 @@ void physicDiseases(struct Giocatore *dis, int *al, int *yPD, int *rlPD)
     else if (*rlPD == 4)
     {
         printf(YELLOW BOLD "*** TI SEI TAGLIATO UN DITO MENTRE CUCINAVI ***\n\n" RESET);
-        (*yPD) = 1;
+        *yPD = 1;
         dis->healht -= 2;
     }
     else
@@ -2348,7 +2355,7 @@ void prisionGym(struct Giocatore *palgym, int *vivoOmorto, int mortoOvivo)
     }
 }
 
-void controlYearProximative(struct Giocatore *control, int *patLicense, int *brkGirlProb, int *flong, int *lvc, int *mtb, int *wrk, int *pris)
+void controlYearProximative(struct Giocatore *control, int *patLicense, int *brkGirlProb, int *flong, int *lvc, int *mtb, int *wrk, int *pris, int *al)
 {
     if ((*pris) == 0)
     {
@@ -2375,6 +2382,9 @@ void controlYearProximative(struct Giocatore *control, int *patLicense, int *brk
             control->happiness -= 5;
             control->healht -= 4;
             control->mentalHealth -= 4;
+
+            if (control->healht < 0) { control->healht = 0; *al = 0; }
+
             (*mtb)++;
         }
         else if (control->age > 23 && *lvc < 1)
@@ -2384,6 +2394,9 @@ void controlYearProximative(struct Giocatore *control, int *patLicense, int *brk
             control->happiness -= 6;
             control->healht -= 4;
             control->mentalHealth -= 4;
+
+            if (control->healht < 0) { control->healht = 0; *al = 0; }
+
             (*mtb)++;
         }
         else if (control->friends < 1 && control->age > 14)
@@ -2393,13 +2406,21 @@ void controlYearProximative(struct Giocatore *control, int *patLicense, int *brk
             control->happiness -= 6;
             control->healht -= 4;
             control->mentalHealth -= 3;
+
+            if (control->healht < 0) { control->healht = 0; *al = 0; }
+
             (*mtb)++;
         }
 
-        if (*brkGirlProb == 2 && *lvc == 1 && *flong >= 1)
+        if (*lvc == 1 && *flong >= 1)
         {
-            printf(RED BOLD "\n\n*** LA TUA RAGAZZA TI HA SCOPERTO MENTRE LA TRADIVI, ORA SEI SINGLE ***\n\n" RESET);
-            (*lvc) = 0;
+            
+            if (*brkGirlProb == 2)
+            {
+                printf(RED BOLD "\n\n*** LA TUA RAGAZZA TI HA SCOPERTO MENTRE LA TRADIVI, ORA SEI SINGLE ***\n\n" RESET);
+                (*lvc) = 0;
+            }
+
         }
     }
 }
@@ -2595,4 +2616,44 @@ void workOrCollege(struct Giocatore *workOrColl, int *countUni, int *yearCurr, i
                 *workkk = 1; *yearsSvd = 0;
             }
 
+}
+
+void addToHead(struct Node** head, int *age)
+{
+
+    struct Node* new = createNode(age);
+
+    if (new == NULL){
+        return;
+    }
+
+    new->next = *head;
+    *head = new;
+
+}
+
+struct Node* createNode(int *new_expression)
+{
+
+    struct Node* new_node = (struct Node *) malloc(sizeof(struct Node));
+
+    if (new_node == NULL){
+        return NULL;
+    }
+
+    new_node->expression = *new_expression;
+    new_node->next = NULL;
+}
+
+void freeList(struct Node* head){
+
+    struct Node* temp;
+
+    while (temp != NULL)
+    {
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
+    
 }

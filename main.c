@@ -12,6 +12,7 @@ int main()
 {
 
     struct Giocatore self[1];
+    struct Node* list = NULL;
 
     struct Nation world[] = {
         {"India", 2.9},
@@ -45,6 +46,8 @@ int main()
     int car = 0;
     int retired = 0;
     int diplomated = 0;
+    int tempAge = 0;
+    int chiusura = 0;
 
     char nomeScelto[50];
     char cognomeScelto[50];
@@ -110,7 +113,7 @@ int main()
         if (addiction == 1) { healthAndAddiction(self, &addiction); }
         if (probabilities == 3 && loverCount == 1) { goWithGirlfriend(self); }
 
-        controlYearProximative(self, &carLicense, &breakGirlProb, &fling, &loverCount, &mentalDiseases, &work, &prision);
+        controlYearProximative(self, &carLicense, &breakGirlProb, &fling, &loverCount, &mentalDiseases, &work, &prision, &alive);
         mentalDis(self);
 
         if (self[0].age >= 18 && uniCount == 0 && prision == 0 && work == 0) { workOrCollege(self, &uniCount, &yearCurrent, &work, &servedYears, &diplomated); }
@@ -124,34 +127,38 @@ int main()
         getch();
 
         self[0].age += 1;
+        tempAge = self[0].age;
+
+        addToHead(&list, &tempAge);
+
         self[0].currentPortfolio += self[0].salary;
 
         if (diplomated == 0 && uniCount == 1) { college(self, &uniCount, &yearCurrent, &diplomated); }
 
         int choice;
-        printf(BLUE BOLD "\n\n--- SE NON SEI IN PRIGIONE PUOI FARE QUESTE AZIONI ---\n\n" RESET);
+
         printf("\n\nAZIONI: 1.Sport | 2.Lettura | 3.Musica | 4.Amici | 5.Ragazze | 6.Night Club |\n7.Passa del tempo con amici | 8.Passa del tempo con la tua ragazza | 9.Rehab\n");
-        printf("10.Shopping | 11.Emigrare | 12.Casinò (age >= 18) | 13.Compi Crimini\nScelta: \n");
+        printf("10.Shopping | 11.Emigrare | 12.Casinò (age >= 18) | 13.Compi Crimini\nScelta: ");
         scanf("%d", &choice);
 
         if (choice == 1) gym(self);
         else if (choice == 2) righting(self);
         else if (choice == 3) music(self);
         else if (choice == 4) newFriends(self);
-        else if (choice == 5 && self[0].age < 12 && prision == 0) { printf(BLUE "\nSEI TROPPO PICCOLO\n" RESET); }
-        else if (choice == 5 && self[0].age >= 12 && prision == 0) girlResearch(self, &loverCount, &sonsCount, &fling);
-        else if (choice == 6 && self[0].age < 14 && prision == 0) { printf(BLUE "\nSEI TROPPO PICCOLO\n" RESET); }
-        else if (choice == 6 && self[0].age >= 14 && prision == 0) nightClub(self, &addiction, &alive);
-        else if (choice == 7 && self[0].friends >= 1 && prision == 0) timeWithFriends(self, &fling);
+        else if (choice == 5 && self[0].age < 12) { printf(BLUE "\nSEI TROPPO PICCOLO\n" RESET); }
+        else if (choice == 5 && self[0].age >= 12) girlResearch(self, &loverCount, &sonsCount, &fling);
+        else if (choice == 6 && self[0].age < 14) { printf(BLUE "\nSEI TROPPO PICCOLO\n" RESET); }
+        else if (choice == 6 && self[0].age >= 14) nightClub(self, &addiction, &alive);
+        else if (choice == 7 && self[0].friends >= 1) timeWithFriends(self, &fling);
         else if (choice == 8 && loverCount < 1 && prision == 0) { printf(BLUE "\nNON HAI UNA RAGAZZA\n" RESET); }
-        else if (choice == 8 && loverCount >= 1 && prision == 0) timeWithGirfriend(self, &sonsCount);
-        else if (choice == 9 && addiction < 1 && prision == 0) { printf(BLUE "\n\nNON SEI DIPENDENTE DA NESSUNA SOSTANZA\n" RESET); }
-        else if (choice == 9 && addiction >= 1 && ludopatic == 1) rehab(self, &addiction, &probRehab, &ludopatic);
+        else if (choice == 8 && loverCount >= 1) timeWithGirfriend(self, &sonsCount);
+        else if (choice == 9 && addiction < 1 && ludopatic < 1) { printf(BLUE "\n\nNON SEI DIPENDENTE DA NESSUNA SOSTANZA\n" RESET); }
+        else if (choice == 9 && addiction == 1 || ludopatic == 1) rehab(self, &addiction, &probRehab, &ludopatic);
         else if (choice == 10 && self[0].currentPortfolio <= 0 && prision == 0) { printf(BLUE "\n\n*** NON HAI ABBASTANZA SOLDI ***\n" RESET); }
         else if (choice == 10 && self[0].currentPortfolio > 10 && prision == 0) shop(self, carLicense);
-        else if (choice == 11 && self[0].age > 18 && self[0].currentPortfolio > 10000 && prision == 0) emigrate(self, &loverCount, uniCount, &prision, &prisProb);
-        else if (choice == 12 && self[0].age >= 18 && self[0].currentPortfolio > 800 && prision == 0) blackJack(self, &ludopatic);
-        else if (choice == 13 && prision == 0) crimes(self, &criminal, &criminalRating, &prision, &killedPeople, &loverCount, &sonsCount, &prisProb);
+        else if (choice == 11) emigrate(self, &loverCount, uniCount, &prision, &prisProb);
+        else if (choice == 12) blackJack(self, &ludopatic);
+        else if (choice == 13) crimes(self, &criminal, &criminalRating, &prision, &killedPeople, &loverCount, &sonsCount, &prisProb);
 
         while (prision == 1 && alive == 1)
         {
@@ -164,8 +171,7 @@ int main()
             printf("1.Palestra | 2.Sentenza | 3.Visita coniugale | 4.Spedisci lettera| 5.Tenta la fuga | 6.Picchia | 7.Infermieria\n");
             printf("Scelta: ");
             scanf("%d", &choice);
-            while (getchar() != '\n')
-                ;
+            while (getchar() != '\n');
 
             switch (choice)
             {
@@ -176,7 +182,7 @@ int main()
                 sentenceRewiew(self, &prisProb, &prision);
                 break;
             case 3:
-                coniugalVisit(self);
+                coniugalVisit(self, &loverCount);
                 break;
             case 4:
                 letter(self);
@@ -206,6 +212,8 @@ int main()
                     self[0].mentalHealth -= 6;
                     self[0].fertility -= 2;
                     yearsInPrision++;
+
+                    if (self[0].healht < 0) { self[0].healht = 0; alive = 0; }
                 }
                 else
                 {
@@ -226,6 +234,8 @@ int main()
                     self[0].mentalHealth -= 7;
                     self[0].fertility -= 2;
                     yearsInPrision++;
+
+                    if (self[0].healht < 0) { self[0].healht = 0; alive = 0; }
                 }
                 else
                 {
@@ -246,6 +256,8 @@ int main()
                     self[0].mentalHealth -= 6;
                     self[0].fertility -= 2;
                     yearsInPrision++;
+
+                    if (self[0].healht < 0) { self[0].healht = 0; alive = 0; }
                 }
                 else
                 {
@@ -266,6 +278,8 @@ int main()
                     self[0].mentalHealth -= 6;
                     self[0].fertility -= 2;
                     yearsInPrision++;
+
+                    if (self[0].healht < 0) { self[0].healht = 0; alive = 0; }
                 }
                 else
                 {
@@ -286,6 +300,8 @@ int main()
                     self[0].mentalHealth -= 6;
                     self[0].fertility -= 2;
                     yearsInPrision++;
+
+                    if (self[0].healht < 0) { self[0].healht = 0; alive = 0; }
                 }
                 else
                 {
@@ -303,6 +319,7 @@ int main()
                 prision = 0;
             }
 
+           if (self[0].healht <= 0) { alive = 0; }
            if (probPhysicDiseases <= 20) {physicDiseases(self, &alive, &yearsOfPhysicDiseases, &rollPhysicDiseases);}
            if (ludopatic == 1) {self[0].currentPortfolio -= 1000; self[0].mentalHealth -= 3;}
            if (sonsCount >= 1) { annualNetSons(self, &sonsCount); }
@@ -326,8 +343,33 @@ int main()
         
     }
 
-    printf(RED BOLD "\n--- GAME OVER ---\nAnni vissuti: %d\n" RESET, self[0].age);
+    printf(RED BOLD "\n--- GAME OVER ---\nLavoro: %s\nAmanti: %d\nFigli: %d\nPatrimonio: %.2f\n\n[Lista anni vissuti]:\n\n " RESET, self[0].work, fling, sonsCount, self[0].currentPortfolio);
 
+    struct Node* corrente = list;
+
+    while (corrente != NULL)
+    {
+       printf(GREEN BOLD" [%d]\n" RESET, corrente->expression - 1);
+       printf(YELLOW    "  ||\n" RESET);
+       printf(YELLOW    "  VV\n" RESET);
+        corrente = corrente->next;
+    }
+    
+         printf("NULL\n\n");
+
+        printf("\nDigita '0' e premi INVIO per uscire: ");
+        fflush(stdout);
+
+        while (scanf(" %d", &chiusura) != 1 || chiusura != 0) {
+        printf("\nDevi digitare proprio 0 per uscire: ");
+
+        while (getchar() != '\n'); 
+        }
+
+        freeList(list); 
+
+
+    return 0;
 }
 
 
