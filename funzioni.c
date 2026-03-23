@@ -511,12 +511,12 @@ void war(struct Giocatore *w, int militarChoice)
     }
 }
 
-void nuclearProbabilitiesGeneral(struct Giocatore *n, int weaponN)
+void nuclearProbabilitiesGeneral(struct Giocatore *n, int *weaponN)
 {
     int scelta = 0;
     printf(BLUE BOLD "\n--- GIORNATA ALLA CENTRALE NUCLEARE ---\n" RESET);
 
-    switch (weaponN)
+    switch (*weaponN)
     {
     case 1:
         printf(RED BOLD "Lo Stato ti ha incaricato di costruire un'arma nucleare segreta.\n" RESET);
@@ -791,31 +791,31 @@ void music(struct Giocatore *m)
 
     if (instruments == 1)
     {
-        printf(GREEN BOLD "***HAI INIZIATO A SUONARE IL BASSO***\n\nHai fatto anche amicizia\n" RESET);
+        printf(GREEN BOLD "\n\n*** HAI INIZIATO A SUONARE IL BASSO***\n\nHai fatto anche amicizia\n" RESET);
         m->iQ += 1;
         m->friends += 1;
     }
     else if (instruments == 2)
     {
-        printf(GREEN BOLD "***HAI INIZIATO A SUONARE LA CHITARRA***\n\nHai fatto anche amicizia\n" RESET);
+        printf(GREEN BOLD "\n\n*** HAI INIZIATO A SUONARE LA CHITARRA***\n\nHai fatto anche amicizia\n" RESET);
         m->iQ += 1;
         m->friends += 1;
     }
     else if (instruments == 3)
     {
-        printf(GREEN BOLD "***HAI INIZIATO A SUONARE PERCUSSIONI***\n\nHai fatto anche amicizia\n" RESET);
+        printf(GREEN BOLD "\n\n***HAI INIZIATO A SUONARE PERCUSSIONI***\n\nHai fatto anche amicizia\n" RESET);
         m->iQ += 1;
         m->friends += 1;
     }
     else if (instruments == 4)
     {
-        printf(GREEN BOLD "***HAI INIZIATO A SUONARE IL FLAUTO***\n\nHai fatto anche amicizia\n" RESET);
+        printf(GREEN BOLD "\n\n***HAI INIZIATO A SUONARE IL FLAUTO***\n\nHai fatto anche amicizia\n" RESET);
         m->iQ += 1;
         m->friends += 1;
     }
     else
     {
-        printf(GREEN BOLD "***HAI INIZIATO A SUONARE IL VIOLINO***\n\nHai fatto anche amicizia\n" RESET);
+        printf(GREEN BOLD "\n\n***HAI INIZIATO A SUONARE IL VIOLINO***\n\nHai fatto anche amicizia\n" RESET);
         m->iQ += 1;
         m->friends += 1;
     }
@@ -1493,6 +1493,8 @@ void hackingProbabilities(struct Giocatore *hack)
 
         if (chiaveUtente != chiaveCorretta)
         {
+            tentativi -= 1;
+
             if (tentativi < 1)
             {
                 printf("\n\n*** MISSIONE FALLITA, ATTACCO TERRORISTICO NON SVENTATO ***\n\n");
@@ -1547,7 +1549,6 @@ void hackingProbabilities(struct Giocatore *hack)
             printf(GREEN "Inserisci il prossimo valore (Tentativi rimasti: %d): " RESET, tentativi);
             scanf("%d", &risposta);
 
-            // La logica è elevamento a potenza del precedente: 2*2=4, 4*4=16, 16*16=256
             if (risposta == 256)
             {
                 printf(GREEN BOLD "\n[+] Protocollo AES-256 attivato con successo. Connessioni nemiche rifiutate.\n" RESET);
@@ -2357,6 +2358,9 @@ void prisionGym(struct Giocatore *palgym, int *vivoOmorto, int mortoOvivo)
 
 void controlYearProximative(struct Giocatore *control, int *patLicense, int *brkGirlProb, int *flong, int *lvc, int *mtb, int *wrk, int *pris, int *al)
 {
+
+    if (control->age > 12 && control->age <30) { control->fertility += 5; }
+
     if ((*pris) == 0)
     {
 
@@ -2378,10 +2382,16 @@ void controlYearProximative(struct Giocatore *control, int *patLicense, int *brk
 
         if (control->age > 23 && *wrk == 0)
         {
+            int temp = 0;
+
+            temp++;
+
+            if (temp == 3){
             printf("\n\n*** CONTINUERAI A SOFFRIRE DI ANSIA SE NON RIESCI A TROVARE LAVORO ***\n\n");
             control->happiness -= 5;
             control->healht -= 4;
             control->mentalHealth -= 4;
+            } else { temp = 0; }
 
             if (control->healht < 0) { control->healht = 0; *al = 0; }
 
@@ -2389,11 +2399,16 @@ void controlYearProximative(struct Giocatore *control, int *patLicense, int *brk
         }
         else if (control->age > 23 && *lvc < 1)
         {
+            int temp = 0;
 
+            temp++;
+
+            if (temp == 3){
             printf("\n\n*** CONTINUI A ESSERE TRISTE SENZA UNA PARTNER ***\n\n");
             control->happiness -= 6;
             control->healht -= 4;
             control->mentalHealth -= 4;
+            } else { temp = 0; }
 
             if (control->healht < 0) { control->healht = 0; *al = 0; }
 
@@ -2526,7 +2541,7 @@ void checkWork(struct Giocatore *check, int *workLife, int *probWar, int *prisio
         {
             if (strcmp(check->work, "Ingegnere Nuc.") == 0 && (*probNuclear) == 2 && (*prisionCheck == 0))
             {
-                nuclearProbabilitiesGeneral(check, *probNuclear);
+                nuclearProbabilitiesGeneral(check, probNuclear);
             }
         }
 
@@ -2605,7 +2620,7 @@ void workOrCollege(struct Giocatore *workOrColl, int *countUni, int *yearCurr, i
     printf(GREEN BOLD "\nHAI 18 ANNI! 1.Cerca Lavoro | 2.Iscriviti al College: " RESET);
             scanf("%d", &c18); while(getchar() != '\n');
             if (c18 == 2) {
-                printf(YELLOW BOLD "1.Ingegneria Nucleare | 2.Computer Science\n" RESET);
+                printf(YELLOW BOLD "1.Ingegnere Nuc. | 2.Computer Science\n" RESET);
                 printf(YELLOW "Inserisci facolta': " RESET);
                 fgets(workOrColl->subject, 20, stdin);
                 workOrColl->subject[strcspn(workOrColl->subject, "\n")] = '\0';
@@ -2656,4 +2671,11 @@ void freeList(struct Node* head){
         free(temp);
     }
     
+}
+
+void suicide(int *notVivo) {
+
+    printf(RED BOLD "\n\n*** TI SEI SUICIDATO ***\n\n" RESET);
+    *notVivo = 0;
+
 }

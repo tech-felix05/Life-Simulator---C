@@ -11,7 +11,7 @@ void eat(struct Giocatore *c);
 void nightClub(struct Giocatore *night, int *addict, int *dead);
 void chooseWork(struct Giocatore *s, int hasDegree, int *worke);
 void war(struct Giocatore *w, int militarChoice);
-void nuclearProbabilitiesGeneral(struct Giocatore *n, int weaponN);
+void nuclearProbabilitiesGeneral(struct Giocatore *n, int *weaponN);
 void verifyRetired(struct Giocatore *p, int *year);
 void music(struct Giocatore *m);
 void timeWithFriends(struct Giocatore *f, int *ex);
@@ -50,6 +50,7 @@ void workOrCollege(struct Giocatore *workOrColl, int *countUni, int *yearCurr, i
 void addToHead(struct Node** head, int *age);
 struct Node* createNode(int *new_expression);
 void freeList(struct Node* head);
+void suicide(int *notVivo);
 
 
 #endif

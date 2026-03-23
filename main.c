@@ -54,7 +54,7 @@ int main()
 
     self[0].age = 0;
     self[0].fertility = 1;
-    self[0].iQ = (rand() % 100) + 40;
+    self[0].iQ = (rand() % 70) + 40;
     self[0].healht = (rand() % 100) + 1;
     self[0].mentalHealth = (rand() % 100) + 1;
     self[0].happiness = (rand() % 100) + 1;
@@ -63,7 +63,8 @@ int main()
     self[0].friends = 0;
     strcpy(self[0].work, "Disoccupato");
 
-    identityCard(world, nomeScelto, cognomeScelto);
+    int randomIndex = rand() % 13;
+    identityCard(&world[randomIndex], nomeScelto, cognomeScelto);
 
     for (int a = 1; a <= 7; a++)
     {
@@ -93,12 +94,14 @@ int main()
 
         controlHealth(self);
 
-        if (self[0].iQ > 100 && self[0].age <= 14) { self[0].iQ = 83; }
+        if (self[0].iQ > 100 && self[0].age <= 14) { self[0].iQ += 5; }
         if (self[0].healht > 100) { self[0].healht = 100; }
         if (self[0].healht < 0) { self[0].healht = 0; }
         if (self[0].mentalHealth > 100) { self[0].mentalHealth = 100; }
         if (self[0].mentalHealth < 0) { self[0].mentalHealth = 0; }
         if (probPhysicDiseases <= 20) {physicDiseases(self, &alive, &yearsOfPhysicDiseases, &rollPhysicDiseases);}
+        if (hackWorkProb == 2 && strcmp(self[0].work, "Etichal Hacker") == 0) { hackingProbabilities(self); }
+        if (strcmp(self[0].work, "Ingegnere Nuc.") == 0) { nuclearProbabilitiesGeneral(self, &nuclearWeaponBuild); }
         if (criminal >= 50 && self[0].age > 15) { mafiaLetter(self, &criminal); }
         if (ludopatic == 1) {self[0].currentPortfolio -= 1000; self[0].mentalHealth -= 3;}
         if (sonsCount >= 1) { annualNetSons(self, &sonsCount); }
@@ -137,9 +140,13 @@ int main()
 
         int choice;
 
+        if (alive == 1){
+
         printf("\n\nAZIONI: 1.Sport | 2.Lettura | 3.Musica | 4.Amici | 5.Ragazze | 6.Night Club |\n7.Passa del tempo con amici | 8.Passa del tempo con la tua ragazza | 9.Rehab\n");
-        printf("10.Shopping | 11.Emigrare | 12.Casinò (age >= 18) | 13.Compi Crimini\nScelta: ");
+        printf("10.Shopping | 11.Emigrare | 12.Casinò (age >= 18) | 13.Compi Crimini | 14.Suicidio\nScelta: ");
         scanf("%d", &choice);
+
+        }
 
         if (choice == 1) gym(self);
         else if (choice == 2) righting(self);
@@ -159,6 +166,7 @@ int main()
         else if (choice == 11) emigrate(self, &loverCount, uniCount, &prision, &prisProb);
         else if (choice == 12) blackJack(self, &ludopatic);
         else if (choice == 13) crimes(self, &criminal, &criminalRating, &prision, &killedPeople, &loverCount, &sonsCount, &prisProb);
+        else if (choice == 14) suicide(&alive);
 
         while (prision == 1 && alive == 1)
         {
@@ -168,9 +176,14 @@ int main()
             work = 0;
             uniCount = 0;
 
-            printf("1.Palestra | 2.Sentenza | 3.Visita coniugale | 4.Spedisci lettera| 5.Tenta la fuga | 6.Picchia | 7.Infermieria\n");
+           if (alive == 1){
+
+            printf("1.Palestra | 2.Sentenza | 3.Visita coniugale | 4.Spedisci lettera| 5.Tenta la fuga | 6.Picchia | 7.Infermieria | 8.Suicidio\n");
             printf("Scelta: ");
             scanf("%d", &choice);
+
+           }
+
             while (getchar() != '\n');
 
             switch (choice)
@@ -195,6 +208,9 @@ int main()
                 break;
             case 7:
                 medicJail(self);
+                break;
+            case 8:
+                suicide(&alive);
                 break;
             default:
                 break;
