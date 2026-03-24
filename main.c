@@ -64,7 +64,8 @@ int main()
     strcpy(self[0].work, "Disoccupato");
 
     int randomIndex = rand() % 13;
-    identityCard(&world[randomIndex], nomeScelto, cognomeScelto);
+    struct Nation *myNation = &world[randomIndex];
+    identityCard(myNation, nomeScelto, cognomeScelto);
 
     for (int a = 1; a <= 7; a++)
     {
@@ -143,7 +144,7 @@ int main()
         if (alive == 1){
 
         printf("\n\nAZIONI: 1.Sport | 2.Lettura | 3.Musica | 4.Amici | 5.Ragazze | 6.Night Club |\n7.Passa del tempo con amici | 8.Passa del tempo con la tua ragazza | 9.Rehab\n");
-        printf("10.Shopping | 11.Emigrare | 12.Casinò (age >= 18) | 13.Compi Crimini | 14.Suicidio\nScelta: ");
+        printf("10.Shopping | 11.Emigrare | 12.Casinò (age >= 18) | 13.Compi Crimini | 14.Suicidio | 15.Ospedale\nScelta: ");
         scanf("%d", &choice);
 
         }
@@ -167,6 +168,7 @@ int main()
         else if (choice == 12) blackJack(self, &ludopatic);
         else if (choice == 13) crimes(self, &criminal, &criminalRating, &prision, &killedPeople, &loverCount, &sonsCount, &prisProb);
         else if (choice == 14) suicide(&alive);
+        else if (choice == 15) hospital(self, myNation, &alive);
 
         while (prision == 1 && alive == 1)
         {

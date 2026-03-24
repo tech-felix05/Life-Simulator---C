@@ -321,7 +321,8 @@ void nightClub(struct Giocatore *night, int *addict, int *dead)
         printf(YELLOW "\nOfferta: Moscow Mule. Accetti? (1=Si, 0=No): " RESET);
         scanf("%d", &acc);
 
-        while (getchar() != '\n');
+        while (getchar() != '\n')
+            ;
         if (acc == 1 && *addict == 1)
         {
             if (roll <= 10)
@@ -346,7 +347,8 @@ void nightClub(struct Giocatore *night, int *addict, int *dead)
         printf("Offerta: NEVE. Accetti? (1=Si, 0=No): ");
         scanf("%d", &acc);
 
-        while (getchar() != '\n');
+        while (getchar() != '\n')
+            ;
         if (acc == 1 && *addict == 1)
         {
             if (roll <= 20)
@@ -371,7 +373,8 @@ void nightClub(struct Giocatore *night, int *addict, int *dead)
         printf(RED BOLD "Offerta: HERO. Accetti? (1=Si, 0=No): " RESET);
         scanf("%d", &acc);
 
-        while (getchar() != '\n');
+        while (getchar() != '\n')
+            ;
         if (acc == 1 && *addict == 1)
         {
             if (roll <= 40)
@@ -409,14 +412,13 @@ void chooseWork(struct Giocatore *s, int hasDegree, int *worke)
             {
                 printf(BLUE BOLD "\n\n*** NON HAI LA LAUREA ADATTA ***\n\n" RESET);
             }
-            
         }
         if (job == 2 && strcmp(s->subject, "Ingegnere Nuc.") != 0)
         {
             printf(BLUE BOLD "\n\n*** NON HAI LA LAUREA ADATTA ***\n\n" RESET);
         }
         if (job == 1 && strcmp(s->subject, "Computer Science") == 0)
-        {            
+        {
             strcpy(s->work, "Developer");
             s->salary = 30000;
             *worke = 1;
@@ -439,7 +441,6 @@ void chooseWork(struct Giocatore *s, int hasDegree, int *worke)
             s->salary = 25000;
             *worke = 1;
         }
-
     }
 
     else
@@ -462,8 +463,7 @@ void chooseWork(struct Giocatore *s, int hasDegree, int *worke)
             s->salary = 2300;
         }
     }
-    while (getchar() != '\n')
-        ;
+    while (getchar() != '\n');
     printf(GREEN BOLD "Hai iniziato a lavorare come: %s\n" RESET, s->work);
 }
 
@@ -1308,8 +1308,16 @@ void shop(struct Giocatore *sh, int tl)
 
 void emigrate(struct Giocatore *em, int *cntlove, int cnt, int *pris, int *snt)
 {
-    if (em->age < 18) { printf(RED "\n\n*** NON SEI MAGGIORENNE ***\n\n" RESET); return; }
-    if (em->currentPortfolio < 800) { printf(RED "\n\n*** NON HAI ABBASTANZA SOLDI ***\n\n" RESET); return; }
+    if (em->age < 18)
+    {
+        printf(RED "\n\n*** NON SEI MAGGIORENNE ***\n\n" RESET);
+        return;
+    }
+    if (em->currentPortfolio < 800)
+    {
+        printf(RED "\n\n*** NON HAI ABBASTANZA SOLDI ***\n\n" RESET);
+        return;
+    }
 
     int newp = 0;
     int illegal = 0;
@@ -1572,8 +1580,16 @@ void hackingProbabilities(struct Giocatore *hack)
 void blackJack(struct Giocatore *black, int *ludo)
 {
 
-    if (black->age < 18) { printf(RED "\n\n*** NON SEI MAGGIORENNE **\n\n" RESET); return; }
-    if (black->currentPortfolio < 800) { printf(RED "\n\n*** NON HAI ABBASTANZA SOLDI ***\n\n" RESET); return; }
+    if (black->age < 18)
+    {
+        printf(RED "\n\n*** NON SEI MAGGIORENNE **\n\n" RESET);
+        return;
+    }
+    if (black->currentPortfolio < 800)
+    {
+        printf(RED "\n\n*** NON HAI ABBASTANZA SOLDI ***\n\n" RESET);
+        return;
+    }
 
     int lose = 1;
     int manoG[10], manoB[10]; // Array per contenere fino a 10 carte
@@ -2143,16 +2159,24 @@ void mess(struct Giocatore *sqeeze, int *pseNt)
 
 void coniugalVisit(struct Giocatore *coniug, int *girl)
 {
-    if (*girl >= 1) { printf(RED BOLD "\n\n--- VISITA CONIUGALE ---\n\n" RESET);
-    printf(GREEN BOLD "*** HAI RIVISTO LA TUA RAGAZZA ***\n\n" RESET);
-    printf(YELLOW BOLD "*** TROVATE IL MODO DI AVVICINARVI E VI SCATENATE ***\n\n" RESET);
-    coniug->happiness += 5;
-    coniug->mentalHealth += 5;
+    if (*girl >= 1)
+    {
+        printf(RED BOLD "\n\n--- VISITA CONIUGALE ---\n\n" RESET);
+        printf(GREEN BOLD "*** HAI RIVISTO LA TUA RAGAZZA ***\n\n" RESET);
+        printf(YELLOW BOLD "*** TROVATE IL MODO DI AVVICINARVI E VI SCATENATE ***\n\n" RESET);
+        coniug->happiness += 5;
+        coniug->mentalHealth += 5;
 
-    if (coniug->fertility >= 50) { printf(GREEN BOLD "--- ORA ASPETTI UN FIGLIO ---\n\n" RESET); } }
+        if (coniug->fertility >= 50)
+        {
+            printf(GREEN BOLD "--- ORA ASPETTI UN FIGLIO ---\n\n" RESET);
+        }
+    }
 
-    else { printf(YELLOW "\n\n*** NON HAI UNA RAGAZZA ***\n\n" RESET); }
-    
+    else
+    {
+        printf(YELLOW "\n\n*** NON HAI UNA RAGAZZA ***\n\n" RESET);
+    }
 }
 
 void letter(struct Giocatore *lett)
@@ -2214,22 +2238,25 @@ void escape(struct Giocatore *esc, int *sEsca, int *prsE)
         input = getch();
         if (input == 'w')
             playerY--;
-        guardY--;
+
         if (input == 's')
             playerY++;
-        guardX++;
+
         if (input == 'a')
             playerX--;
-        guardX--;
+
         if (input == 'd')
             playerX++;
-        guardX++;
 
-        // if (guardX < playerX) guardX++;
-        // else if (guardX > playerX) guardX--;
+        if (guardX < playerX)
+            guardX++;
+        else if (guardX > playerX)
+            guardX--;
 
-        // if (guardY < playerY) guardY++;
-        // else if (guardY > playerY) guardY--;
+        if (guardY < playerY)
+            guardY++;
+        else if (guardY > playerY)
+            guardY--;
 
         if (playerX == guardX && playerY == guardY)
         {
@@ -2283,7 +2310,6 @@ void physicDiseases(struct Giocatore *dis, int *al, int *yPD, int *rlPD)
     {
         printf(GREEN BOLD "*** ATTACCO DI PANICO ***\n\n" RESET);
     }
-
 }
 
 void takeCarLicense(struct Giocatore *car, int *cle)
@@ -2332,7 +2358,9 @@ void takeCarLicense(struct Giocatore *car, int *cle)
         {
             printf(GREEN BOLD "\n\n*** CONGRATULAZIONI! HAI RICEVUTO LA PATENTE DI GUIDA ***\n\n" RESET);
             (*cle) = 1;
-        } else {
+        }
+        else
+        {
             printf(RED BOLD "\n\n*** BOCCIATO ***\n\n" RESET);
         }
     }
@@ -2359,7 +2387,10 @@ void prisionGym(struct Giocatore *palgym, int *vivoOmorto, int mortoOvivo)
 void controlYearProximative(struct Giocatore *control, int *patLicense, int *brkGirlProb, int *flong, int *lvc, int *mtb, int *wrk, int *pris, int *al)
 {
 
-    if (control->age > 12 && control->age <30) { control->fertility += 5; }
+    if (control->age > 12 && control->age < 30)
+    {
+        control->fertility += 5;
+    }
 
     if ((*pris) == 0)
     {
@@ -2386,14 +2417,23 @@ void controlYearProximative(struct Giocatore *control, int *patLicense, int *brk
 
             temp++;
 
-            if (temp == 3){
-            printf("\n\n*** CONTINUERAI A SOFFRIRE DI ANSIA SE NON RIESCI A TROVARE LAVORO ***\n\n");
-            control->happiness -= 5;
-            control->healht -= 4;
-            control->mentalHealth -= 4;
-            } else { temp = 0; }
+            if (temp == 3)
+            {
+                printf("\n\n*** CONTINUERAI A SOFFRIRE DI ANSIA SE NON RIESCI A TROVARE LAVORO ***\n\n");
+                control->happiness -= 5;
+                control->healht -= 4;
+                control->mentalHealth -= 4;
+            }
+            else
+            {
+                temp = 0;
+            }
 
-            if (control->healht < 0) { control->healht = 0; *al = 0; }
+            if (control->healht < 0)
+            {
+                control->healht = 0;
+                *al = 0;
+            }
 
             (*mtb)++;
         }
@@ -2403,14 +2443,23 @@ void controlYearProximative(struct Giocatore *control, int *patLicense, int *brk
 
             temp++;
 
-            if (temp == 3){
-            printf("\n\n*** CONTINUI A ESSERE TRISTE SENZA UNA PARTNER ***\n\n");
-            control->happiness -= 6;
-            control->healht -= 4;
-            control->mentalHealth -= 4;
-            } else { temp = 0; }
+            if (temp == 3)
+            {
+                printf("\n\n*** CONTINUI A ESSERE TRISTE SENZA UNA PARTNER ***\n\n");
+                control->happiness -= 6;
+                control->healht -= 4;
+                control->mentalHealth -= 4;
+            }
+            else
+            {
+                temp = 0;
+            }
 
-            if (control->healht < 0) { control->healht = 0; *al = 0; }
+            if (control->healht < 0)
+            {
+                control->healht = 0;
+                *al = 0;
+            }
 
             (*mtb)++;
         }
@@ -2422,20 +2471,23 @@ void controlYearProximative(struct Giocatore *control, int *patLicense, int *brk
             control->healht -= 4;
             control->mentalHealth -= 3;
 
-            if (control->healht < 0) { control->healht = 0; *al = 0; }
+            if (control->healht < 0)
+            {
+                control->healht = 0;
+                *al = 0;
+            }
 
             (*mtb)++;
         }
 
         if (*lvc == 1 && *flong >= 1)
         {
-            
+
             if (*brkGirlProb == 2)
             {
                 printf(RED BOLD "\n\n*** LA TUA RAGAZZA TI HA SCOPERTO MENTRE LA TRADIVI, ORA SEI SINGLE ***\n\n" RESET);
                 (*lvc) = 0;
             }
-
         }
     }
 }
@@ -2560,99 +2612,156 @@ void checkWork(struct Giocatore *check, int *workLife, int *probWar, int *prisio
     }
 }
 
-void controlHealth(struct Giocatore *healthControl){
+void controlHealth(struct Giocatore *healthControl)
+{
 
-    if (healthControl->healht > 100) { healthControl->healht = 100; }
-    else if (healthControl->healht < 0) { healthControl->healht = 0; }
-    else if (healthControl->age <= 13) { healthControl->iQ += 3; }
-
+    if (healthControl->healht > 100)
+    {
+        healthControl->healht = 100;
+    }
+    else if (healthControl->healht < 0)
+    {
+        healthControl->healht = 0;
+    }
+    else if (healthControl->age <= 13)
+    {
+        healthControl->iQ += 3;
+    }
 }
 
-void ludo(struct Giocatore *ludp){
+void ludo(struct Giocatore *ludp)
+{
 
     ludp->currentPortfolio -= 1000;
     ludp->mentalHealth -= 3;
-
 }
 
-void controlMentalDiseases(struct Giocatore *controlMtb){
+void controlMentalDiseases(struct Giocatore *controlMtb)
+{
 
     controlMtb->happiness -= 5;
     controlMtb->mentalHealth -= 2;
-
 }
 
-void mentalDis(struct Giocatore *mtbControl){
+void mentalDis(struct Giocatore *mtbControl)
+{
 
-    if (mtbControl->mentalHealth < 20){
+    if (mtbControl->mentalHealth < 20)
+    {
 
         mtbControl->healht -= 5;
         printf(RED BOLD "[MALATTIA] La tua mente sta consumando il tuo corpo...\n" RESET);
     }
-
 }
 
-void healthAndAddiction(struct Giocatore *addictAndHealth, int *add){
+void healthAndAddiction(struct Giocatore *addictAndHealth, int *add)
+{
 
-    if (*add == 1) { addictAndHealth->healht -= 7; addictAndHealth->iQ -= 5; addictAndHealth->fertility -= 4; addictAndHealth->mentalHealth -= 5; }
-        else { if (addictAndHealth->age < 25) { addictAndHealth->iQ += 2; addictAndHealth->fertility += 4; addictAndHealth->healht += 5; } if (addictAndHealth->age >= 35) {addictAndHealth->fertility -=1;} if (addictAndHealth->age >=70) { addictAndHealth->iQ -= 3; addictAndHealth->fertility -= 4; addictAndHealth->healht -=3; } }
-        if (addictAndHealth->iQ < 0) { addictAndHealth->iQ = 0; }
-        if (addictAndHealth->healht > 100) { addictAndHealth->healht = 100; }
-        if (addictAndHealth->mentalHealth > 100) { addictAndHealth->mentalHealth = 100; } else if (addictAndHealth->mentalHealth < 0) { addictAndHealth->mentalHealth = 0; }
-
+    if (*add == 1)
+    {
+        addictAndHealth->healht -= 7;
+        addictAndHealth->iQ -= 5;
+        addictAndHealth->fertility -= 4;
+        addictAndHealth->mentalHealth -= 5;
+    }
+    else
+    {
+        if (addictAndHealth->age < 25)
+        {
+            addictAndHealth->iQ += 2;
+            addictAndHealth->fertility += 4;
+            addictAndHealth->healht += 5;
+        }
+        if (addictAndHealth->age >= 35)
+        {
+            addictAndHealth->fertility -= 1;
+        }
+        if (addictAndHealth->age >= 70)
+        {
+            addictAndHealth->iQ -= 3;
+            addictAndHealth->fertility -= 4;
+            addictAndHealth->healht -= 3;
+        }
+    }
+    if (addictAndHealth->iQ < 0)
+    {
+        addictAndHealth->iQ = 0;
+    }
+    if (addictAndHealth->healht > 100)
+    {
+        addictAndHealth->healht = 100;
+    }
+    if (addictAndHealth->mentalHealth > 100)
+    {
+        addictAndHealth->mentalHealth = 100;
+    }
+    else if (addictAndHealth->mentalHealth < 0)
+    {
+        addictAndHealth->mentalHealth = 0;
+    }
 }
 
-void goWithGirlfriend(struct Giocatore *go){
+void goWithGirlfriend(struct Giocatore *go)
+{
 
     printf(YELLOW "\nLa tua ragazza vuole uscire. (1=Si, 0=No): " RESET);
     int sn;
-    
-    scanf("%d", &sn); while(getchar() != '\n');
 
-    if(sn) printf(GREEN "*** AVETE PASSATO TEMPO INSIEME ***!\n" RESET);
+    scanf("%d", &sn);
+    while (getchar() != '\n')
+        ;
 
+    if (sn)
+        printf(GREEN "*** AVETE PASSATO TEMPO INSIEME ***!\n" RESET);
 }
 
-void workOrCollege(struct Giocatore *workOrColl, int *countUni, int *yearCurr, int *workkk, int *yearsSvd, int *dipp){
+void workOrCollege(struct Giocatore *workOrColl, int *countUni, int *yearCurr, int *workkk, int *yearsSvd, int *dipp)
+{
 
     int c18 = 0;
 
     printf(GREEN BOLD "\nHAI 18 ANNI! 1.Cerca Lavoro | 2.Iscriviti al College: " RESET);
-            scanf("%d", &c18); while(getchar() != '\n');
-            if (c18 == 2) {
-                printf(YELLOW BOLD "1.Ingegnere Nuc. | 2.Computer Science\n" RESET);
-                printf(YELLOW "Inserisci facolta': " RESET);
-                fgets(workOrColl->subject, 20, stdin);
-                workOrColl->subject[strcspn(workOrColl->subject, "\n")] = '\0';
-                *countUni = 1; *yearCurr = 0;
-                college(workOrColl, countUni, yearCurr, dipp);
-            } else {
-                chooseWork(&workOrColl[0], 0, workkk);
-                *workkk = 1; *yearsSvd = 0;
-            }
-
+    scanf("%d", &c18);
+    while (getchar() != '\n');
+    if (c18 == 2)
+    {
+        printf(YELLOW BOLD "1.Ingegnere Nuc. | 2.Computer Science\n" RESET);
+        printf(YELLOW "Inserisci facolta': " RESET);
+        fgets(workOrColl->subject, 20, stdin);
+        workOrColl->subject[strcspn(workOrColl->subject, "\n")] = '\0';
+        *countUni = 1;
+        *yearCurr = 0;
+        college(workOrColl, countUni, yearCurr, dipp);
+    }
+    else
+    {
+        chooseWork(&workOrColl[0], 0, workkk);
+        *workkk = 1;
+        *yearsSvd = 0;
+    }
 }
 
-void addToHead(struct Node** head, int *age)
+void addToHead(struct Node **head, int *age)
 {
 
-    struct Node* new = createNode(age);
+    struct Node *new = createNode(age);
 
-    if (new == NULL){
+    if (new == NULL)
+    {
         return;
     }
 
     new->next = *head;
     *head = new;
-
 }
 
-struct Node* createNode(int *new_expression)
+struct Node *createNode(int *new_expression)
 {
 
-    struct Node* new_node = (struct Node *) malloc(sizeof(struct Node));
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
 
-    if (new_node == NULL){
+    if (new_node == NULL)
+    {
         return NULL;
     }
 
@@ -2660,9 +2769,10 @@ struct Node* createNode(int *new_expression)
     new_node->next = NULL;
 }
 
-void freeList(struct Node* head){
+void freeList(struct Node *head)
+{
 
-    struct Node* temp;
+    struct Node *temp;
 
     while (temp != NULL)
     {
@@ -2670,12 +2780,470 @@ void freeList(struct Node* head){
         head = head->next;
         free(temp);
     }
-    
 }
 
-void suicide(int *notVivo) {
+void suicide(int *notVivo)
+{
 
     printf(RED BOLD "\n\n*** TI SEI SUICIDATO ***\n\n" RESET);
     *notVivo = 0;
+}
+
+void hospital(struct Giocatore *osp, struct Nation *nationsName, int *vivo)
+{
+
+    if (strcmp(nationsName->nameNation, "India") == 0)
+    {
+
+        int ospChoice = 0;
+
+        printf(BLUE "\n\n*** OSPEDALE INDIANO ***\n\n" RESET);
+
+        printf(YELLOW "[Inserisci un reparto dove farti visitare | curare]:\n\n" RESET);
+
+        printf("1.Endocrinologia\n2.Malattie veneree\n3.Medico di famiglia\n4.Psichiatra\n\nScelta: ");
+
+        scanf("%d", &ospChoice);
+
+        switch (ospChoice)
+        {
+        case 1:
+            endo(osp);
+            break;
+        case 2:
+            matVen(osp);
+            break;
+        case 3:
+            familyDoctor(osp);
+            break;
+        case 4:
+            psyco(osp);
+            break;
+        default:
+            printf(RED "\n\n[ERRORE DI INPUT]\n\n" RESET);
+            break;
+        }
+    }
+
+    if (strcmp(nationsName->nameNation, "Pakistan") == 0)
+    {
+
+        int ospChoice = 0;
+
+        printf(BLUE "\n\n*** OSPEDALE PAKISTANO ***\n\n" RESET);
+
+        printf(YELLOW "[Inserisci un reparto dove farti visitare | curare]:\n\n" RESET);
+
+        printf("1.Endocrinologia\n2.Malattie veneree\n3.Medico di famiglia\n4.Psichiatra\n\nScelta: ");
+
+        scanf("%d", &ospChoice);
+
+        switch (ospChoice)
+        {
+        case 1:
+            endo(osp);
+            break;
+        case 2:
+            matVen(osp);
+            break;
+        case 3:
+            familyDoctor(osp);
+            break;
+        case 4:
+            psyco(osp);
+            break;
+        default:
+            printf(RED "\n\n[ERRORE DI INPUT]\n\n" RESET);
+            break;
+        }
+    }
+
+    if (strcmp(nationsName->nameNation, "Nigeria") == 0)
+    {
+
+        int ospChoice = 0;
+
+        printf(BLUE "\n\n*** OSPEDALE NIGERIANO ***\n\n" RESET);
+
+        printf(YELLOW "[Inserisci un reparto dove farti visitare | curare]:\n\n" RESET);
+
+        printf("1.Endocrinologia\n2.Malattie veneree\n3.Medico di famiglia\n4.Psichiatra\n\nScelta: ");
+
+        scanf("%d", &ospChoice);
+
+        switch (ospChoice)
+        {
+        case 1:
+            endo(osp);
+            break;
+        case 2:
+            matVen(osp);
+            break;
+        case 3:
+            familyDoctor(osp);
+            break;
+        case 4:
+            psyco(osp);
+            break;
+        default:
+            printf(RED "\n\n[ERRORE DI INPUT]\n\n" RESET);
+            break;
+        }
+    }
+
+    if (strcmp(nationsName->nameNation, "Egitto") == 0)
+    {
+
+        int ospChoice = 0;
+
+        printf(BLUE "\n\n*** OSPEDALE EGIZIANO ***\n\n" RESET);
+
+        printf(YELLOW "[Inserisci un reparto dove farti visitare | curare]:\n\n" RESET);
+
+        printf("1.Endocrinologia\n2.Malattie veneree\n3.Medico di famiglia\n4.Psichiatra\n\nScelta: ");
+
+        scanf("%d", &ospChoice);
+
+        switch (ospChoice)
+        {
+        case 1:
+            endo(osp);
+            break;
+        case 2:
+            matVen(osp);
+            break;
+        case 3:
+            familyDoctor(osp);
+            break;
+        case 4:
+            psyco(osp);
+            break;
+        default:
+            printf(RED "\n\n[ERRORE DI INPUT]\n\n" RESET);
+            break;
+        }
+    }
+
+    if (strcmp(nationsName->nameNation, "Cina") == 0){
+
+        int ospChoice = 0;
+
+        printf(BLUE "\n\n*** OSPEDALE CINESE ***\n\n" RESET);
+
+        printf(YELLOW "[Inserisci un reparto dove farti visitare | curare]:\n\n" RESET);
+
+        printf("1.Endocrinologia\n2.Malattie veneree\n3.Medico di famiglia\n4.Psichiatra\n\nScelta: ");
+
+        scanf("%d", &ospChoice);
+
+        switch (ospChoice)
+        {
+        case 1:
+            endo(osp);
+            break;
+        case 2:
+            matVen(osp);
+            break;
+        case 3:
+            familyDoctor(osp);
+            break;
+        case 4:
+            psyco(osp);
+            break;
+        default:
+            printf(RED "\n\n[ERRORE DI INPUT]\n\n" RESET);
+            break;
+        }
+
+    }
+
+    if (strcmp(nationsName->nameNation, "Stati Uniti") == 0){
+
+        int ospChoice = 0;
+
+        printf(BLUE "\n\n*** OSPEDALE AMERICANO ***\n\n" RESET);
+
+        printf(YELLOW "[Inserisci un reparto dove farti visitare | curare]:\n\n" RESET);
+
+        printf("1.Endocrinologia\n2.Malattie veneree\n3.Medico di famiglia\n4.Psichiatra\n\nScelta: ");
+
+        scanf("%d", &ospChoice);
+
+        switch (ospChoice)
+        {
+        case 1:
+            endo(osp);
+            break;
+        case 2:
+            matVen(osp);
+            break;
+        case 3:
+            familyDoctor(osp);
+            break;
+        case 4:
+            psyco(osp);
+            break;
+        default:
+            printf(RED "\n\n[ERRORE DI INPUT]\n\n" RESET);
+            break;
+        }
+
+    }
+
+    if (strcmp(nationsName->nameNation, "Brasile") == 0){
+
+        int ospChoice = 0;
+
+        printf(BLUE "\n\n*** OSPEDALE BRASILIANO ***\n\n" RESET);
+
+        printf(YELLOW "[Inserisci un reparto dove farti visitare | curare]:\n\n" RESET);
+
+        printf("1.Endocrinologia\n2.Malattie veneree\n3.Medico di famiglia\n4.Psichiatra\n\nScelta: ");
+
+        scanf("%d", &ospChoice);
+
+        switch (ospChoice)
+        {
+        case 1:
+            endo(osp);
+            break;
+        case 2:
+            matVen(osp);
+            break;
+        case 3:
+            familyDoctor(osp);
+            break;
+        case 4:
+            psyco(osp);
+            break;
+        default:
+            printf(RED "\n\n[ERRORE DI INPUT]\n\n" RESET);
+            break;
+        }
+
+    }
+
+    if (strcmp(nationsName->nameNation, "Russia") == 0){
+
+        int ospChoice = 0;
+
+        printf(BLUE "\n\n*** OSPEDALE RUSSO ***\n\n" RESET);
+
+        printf(YELLOW "[Inserisci un reparto dove farti visitare | curare]:\n\n" RESET);
+
+        printf("1.Endocrinologia\n2.Malattie veneree\n3.Medico di famiglia\n4.Psichiatra\n\nScelta: ");
+
+        scanf("%d", &ospChoice);
+
+        switch (ospChoice)
+        {
+        case 1:
+            endo(osp);
+            break;
+        case 2:
+            matVen(osp);
+            break;
+        case 3:
+            familyDoctor(osp);
+            break;
+        case 4:
+            psyco(osp);
+            break;
+        default:
+            printf(RED "\n\n[ERRORE DI INPUT]\n\n" RESET);
+            break;
+        }
+
+    }
+
+    if (strcmp(nationsName->nameNation, "Giappone") == 0){
+
+        int ospChoice = 0;
+
+        printf(BLUE "\n\n*** OSPEDALE GIAPPONESE ***\n\n" RESET);
+
+        printf(YELLOW "[Inserisci un reparto dove farti visitare | curare]:\n\n" RESET);
+
+        printf("1.Endocrinologia\n2.Malattie veneree\n3.Medico di famiglia\n4.Psichiatra\n\nScelta: ");
+
+        scanf("%d", &ospChoice);
+
+        switch (ospChoice)
+        {
+        case 1:
+            endo(osp);
+            break;
+        case 2:
+            matVen(osp);
+            break;
+        case 3:
+            familyDoctor(osp);
+            break;
+        case 4:
+            psyco(osp);
+            break;
+        default:
+            printf(RED "\n\n[ERRORE DI INPUT]\n\n" RESET);
+            break;
+        }
+
+    }
+
+    if (strcmp(nationsName->nameNation, "Germania") == 0){
+
+        int ospChoice = 0;
+
+        printf(BLUE "\n\n*** OSPEDALE TEDESCO ***\n\n" RESET);
+
+        printf(YELLOW "[Inserisci un reparto dove farti visitare | curare]:\n\n" RESET);
+
+        printf("1.Endocrinologia\n2.Malattie veneree\n3.Medico di famiglia\n4.Psichiatra\n\nScelta: ");
+
+        scanf("%d", &ospChoice);
+
+        switch (ospChoice)
+        {
+        case 1:
+            endo(osp);
+            break;
+        case 2:
+            matVen(osp);
+            break;
+        case 3:
+            familyDoctor(osp);
+            break;
+        case 4:
+            psyco(osp);
+            break;
+        default:
+            printf(RED "\n\n[ERRORE DI INPUT]\n\n" RESET);
+            break;
+        }
+
+    }
+
+    if (strcmp(nationsName->nameNation, "Francia") == 0){
+
+        int ospChoice = 0;
+
+        printf(BLUE "\n\n*** OSPEDALE FRANCESE ***\n\n" RESET);
+
+        printf(YELLOW "[Inserisci un reparto dove farti visitare | curare]:\n\n" RESET);
+
+        printf("1.Endocrinologia\n2.Malattie veneree\n3.Medico di famiglia\n4.Psichiatra\n\nScelta: ");
+
+        scanf("%d", &ospChoice);
+
+        switch (ospChoice)
+        {
+        case 1:
+            endo(osp);
+            break;
+        case 2:
+            matVen(osp);
+            break;
+        case 3:
+            familyDoctor(osp);
+            break;
+        case 4:
+            psyco(osp);
+            break;
+        default:
+            printf(RED "\n\n[ERRORE DI INPUT]\n\n" RESET);
+            break;
+        }
+
+    }
+
+    if (strcmp(nationsName->nameNation, "Marocco") == 0){
+
+        int ospChoice = 0;
+
+        printf(BLUE "\n\n*** OSPEDALE MAROCCHINO ***\n\n" RESET);
+
+        printf(YELLOW "[Inserisci un reparto dove farti visitare | curare]:\n\n" RESET);
+
+        printf("1.Endocrinologia\n2.Malattie veneree\n3.Medico di famiglia\n4.Psichiatra\n\nScelta: ");
+
+        scanf("%d", &ospChoice);
+
+        switch (ospChoice)
+        {
+        case 1:
+            endo(osp);
+            break;
+        case 2:
+            matVen(osp);
+            break;
+        case 3:
+            familyDoctor(osp);
+            break;
+        case 4:
+            psyco(osp);
+            break;
+        default:
+            printf(RED "\n\n[ERRORE DI INPUT]\n\n" RESET);
+            break;
+        }
+
+    }
+
+    if (strcmp(nationsName->nameNation, "Italia") == 0){
+        
+        int ospChoice = 0;
+
+        printf(BLUE "\n\n*** OSPEDALE ITALIANO ***\n\n" RESET);
+
+        printf(YELLOW "[Inserisci un reparto dove farti visitare | curare]:\n\n" RESET);
+
+        printf("1.Endocrinologia\n2.Malattie veneree\n3.Medico di famiglia\n4.Psichiatra\n\nScelta: ");
+
+        scanf("%d", &ospChoice);
+
+        switch (ospChoice)
+        {
+        case 1:
+            endo(osp);
+            break;
+        case 2:
+            matVen(osp);
+            break;
+        case 3:
+            familyDoctor(osp);
+            break;
+        case 4:
+            psyco(osp);
+            break;
+        default:
+            printf(RED "\n\n[ERRORE DI INPUT]\n\n" RESET);
+            break;
+        }
+
+    }
+
+}
+
+
+void endo(struct Giocatore *endoc){
+
+    printf("prova\n\n");
+
+}
+
+void matVen(struct Giocatore *venee){
+
+    printf("prova2\n\n");
+
+}
+
+void familyDoctor(struct Giocatore *doc){
+
+    printf("prova3\n\n");
+
+}
+
+void psyco(struct Giocatore *psy){
+
+    printf("prova4\n\n");
 
 }
