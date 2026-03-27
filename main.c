@@ -48,13 +48,15 @@ int main()
     int diplomated = 0;
     int tempAge = 0;
     int chiusura = 0;
+    int controlDis = 0;
+    int tempAfterSexualDisContracted = 0;
 
     char nomeScelto[50];
     char cognomeScelto[50];
 
     self[0].age = 0;
     self[0].fertility = 1;
-    self[0].iQ = (rand() % 70) + 40;
+    self[0].iQ = (rand() % 70) + 10;
     self[0].healht = (rand() % 100) + 1;
     self[0].mentalHealth = (rand() % 100) + 1;
     self[0].happiness = (rand() % 100) + 1;
@@ -92,15 +94,17 @@ int main()
         int rollCauses = (rand() % 10) + 1;
         int rollPhysicDiseases = (rand() % 5) + 1;
         int breakGirlProb = (rand() % 5) + 1;
+        int probSexualDiseases = (rand() % 5) + 1;
 
         controlHealth(self);
 
         if (self[0].iQ > 100 && self[0].age <= 14) { self[0].iQ += 5; }
         if (self[0].healht > 100) { self[0].healht = 100; }
-        if (self[0].healht < 0) { self[0].healht = 0; }
+        if (self[0].healht < 0) { self[0].healht = 0; alive = 0; }
         if (self[0].mentalHealth > 100) { self[0].mentalHealth = 100; }
         if (self[0].mentalHealth < 0) { self[0].mentalHealth = 0; }
         if (probPhysicDiseases <= 20) {physicDiseases(self, &alive, &yearsOfPhysicDiseases, &rollPhysicDiseases);}
+        if (yearsOfPhysicDiseases > 0) { killDiseases(self, &yearsOfPhysicDiseases); }
         if (hackWorkProb == 2 && strcmp(self[0].work, "Etichal Hacker") == 0) { hackingProbabilities(self); }
         if (strcmp(self[0].work, "Ingegnere Nuc.") == 0) { nuclearProbabilitiesGeneral(self, &nuclearWeaponBuild); }
         if (criminal >= 50 && self[0].age > 15) { mafiaLetter(self, &criminal); }
@@ -110,7 +114,7 @@ int main()
         if (retired == 1 && prision == 0) { verifyRetired(self, &servedYears); printf("\n\n*** PENSIONE: [%d] \n\n", self[0].currentPortfolio); }
         if (uniCount == 0 && prision == 0 && self[0].age >= 18) { workOrCollege(self, &uniCount, &yearCurrent, &work, &servedYears, &diplomated); }
         if (uniCount == 1 && prision == 1) { printf(RED "\n\n*** SMESSO DI FREQUENTARE, SEI IN PRIGIONE ***\n\n" RESET); uniCount = 0; }
-        if (self[0].age == 23 && uniCount == 1) { chooseWork(self, 1, &work); }
+        if (diplomated == 1) { chooseWork(self, 1, &work); }
         if (ludopatic == 1) { ludo(self); }
         if (mentalDiseases == 1) { controlMentalDiseases(self); }
         if ((rand() % 100 < 8) && (mentalDiseases == 3)) { probDiseases(self, &rollCauses, &mentalDiseases); }
@@ -128,12 +132,23 @@ int main()
         printf(BLUE "Omicidi: %d | Reati: %d\n" RESET, killedPeople, criminalRating);
 
         printf(GREEN "\n<Clife>: Premi un tasto per avanzare...\n" RESET);
-        getch();
+        
+        if (getch()){
 
-        self[0].age += 1;
-        tempAge = self[0].age;
+          self[0].age += 1;
+          tempAge = self[0].age;
 
-        addToHead(&list, &tempAge);
+          addToHead(&list, &tempAge);
+
+        }
+
+        if (controlDis >= 1) {
+
+             tempAfterSexualDisContracted++; 
+
+             if (tempAfterSexualDisContracted > controlDis) { printf(RED "\n\n[HAI UNA MALATTIA VENEREA, CURATELA ALTRIMENTI DIVENTI INFERTILE]\n\n" RESET); self[0].fertility -= 3; }
+
+            }
 
         self[0].currentPortfolio += self[0].salary;
 
@@ -144,7 +159,7 @@ int main()
         if (alive == 1){
 
         printf("\n\nAZIONI: 1.Sport | 2.Lettura | 3.Musica | 4.Amici | 5.Ragazze | 6.Night Club |\n7.Passa del tempo con amici | 8.Passa del tempo con la tua ragazza | 9.Rehab\n");
-        printf("10.Shopping | 11.Emigrare | 12.Casinò (age >= 18) | 13.Compi Crimini | 14.Suicidio | 15.Ospedale\nScelta: ");
+        printf("10.Shopping | 11.Emigrare | 12.Casino (age >= 18) | 13.Compi Crimini | 14.Suicidio | 15.Ospedale\n16.Mangia\n\nScelta: ");
         scanf("%d", &choice);
 
         }
@@ -154,7 +169,7 @@ int main()
         else if (choice == 3) music(self);
         else if (choice == 4) newFriends(self);
         else if (choice == 5 && self[0].age < 12) { printf(BLUE "\nSEI TROPPO PICCOLO\n" RESET); }
-        else if (choice == 5 && self[0].age >= 12) girlResearch(self, &loverCount, &sonsCount, &fling);
+        else if (choice == 5 && self[0].age >= 12) girlResearch(self, &loverCount, &sonsCount, &fling, &probSexualDiseases, &controlDis);
         else if (choice == 6 && self[0].age < 14) { printf(BLUE "\nSEI TROPPO PICCOLO\n" RESET); }
         else if (choice == 6 && self[0].age >= 14) nightClub(self, &addiction, &alive);
         else if (choice == 7 && self[0].friends >= 1) timeWithFriends(self, &fling);
@@ -168,10 +183,14 @@ int main()
         else if (choice == 12) blackJack(self, &ludopatic);
         else if (choice == 13) crimes(self, &criminal, &criminalRating, &prision, &killedPeople, &loverCount, &sonsCount, &prisProb);
         else if (choice == 14) suicide(&alive);
-        else if (choice == 15) hospital(self, myNation, &alive);
+        else if (choice == 15) hospital(self, myNation, &alive, &sonsCount, &loverCount, &probSexualDiseases, &controlDis);
+        else if (choice == 16) eat(self);
 
         while (prision == 1 && alive == 1)
         {
+
+            if (self[0].mentalHealth < 0) { self[0].mentalHealth = 0; }
+
             int choice = 0;
             int prisionGymProbAliveOrDead = (rand() % 4) + 1;
 
@@ -238,6 +257,7 @@ int main()
                     printf(GREEN BOLD "*** SEI FUORI DI PRIGIONE ***\n\n" RESET);
                     yearsInPrision = 0;
                     prisProb = 0;
+                    prision = 0;
                 }
             }
             else if (strcmp(self[0].sentence, "Omicidio") == 0)
@@ -260,6 +280,7 @@ int main()
                     printf(GREEN BOLD "*** SEI FUORI DI PRIGIONE ***\n\n" RESET);
                     yearsInPrision = 0;
                     prisProb = 0;
+                    prision = 0;
                 }
             }
             else if (strcmp(self[0].sentence, "Furto domiciliare") == 0)
@@ -282,6 +303,7 @@ int main()
                     printf(GREEN BOLD "*** SEI FUORI DI PRIGIONE ***\n\n" RESET);
                     yearsInPrision = 0;
                     prisProb = 0;
+                    prision = 0;
                 }
             }
             else if (strcmp(self[0].sentence, "Furto auto") == 0)
@@ -304,6 +326,7 @@ int main()
                     printf(GREEN BOLD "*** SEI FUORI DI PRIGIONE ***\n\n" RESET);
                     yearsInPrision = 0;
                     prisProb = 0;
+                    prision = 0;
                 }
             }
             else if (strcmp(self[0].sentence, "Associazione mafiosa") == 0)
@@ -329,14 +352,7 @@ int main()
                     prision = 0;
                 }
             }
-            if (yearsInPrision == prisProb)
-            {
-                printf("\n\n*** SEI FUORI DI PRIGIONE ***\n\n");
-                yearsInPrision = 0;
-                prisProb = 0;
-                prision = 0;
-            }
-
+            
            if (self[0].healht <= 0) { alive = 0; }
            if (probPhysicDiseases <= 20) {physicDiseases(self, &alive, &yearsOfPhysicDiseases, &rollPhysicDiseases);}
            if (ludopatic == 1) {self[0].currentPortfolio -= 1000; self[0].mentalHealth -= 3;}
@@ -349,9 +365,16 @@ int main()
            printf(BLUE "Omicidi: %d | Reati: %d\n" RESET, killedPeople, criminalRating);
 
            printf(GREEN "\n<Clife>: Premi un tasto per avanzare...\n" RESET);
-           getch();
+           
+           if (getch()){
 
-           self[0].age += 1;
+             self[0].age += 1;
+
+             tempAge = self[0].age;
+
+             addToHead(&list, &tempAge);
+
+           }
 
         }
 
@@ -389,5 +412,3 @@ int main()
 
     return 0;
 }
-
-

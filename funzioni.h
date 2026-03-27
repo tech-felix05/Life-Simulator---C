@@ -6,7 +6,7 @@ void identityCard(struct Nation *n, char *nS, char *cS);
 void gym(struct Giocatore *s);
 void righting(struct Giocatore *l);
 void newFriends(struct Giocatore *fr);
-void girlResearch(struct Giocatore *g, int *counter, int *son, int *fl);
+void girlResearch(struct Giocatore *g, int *counter, int *son, int *fl, int *sexualDis, int *cDs);
 void eat(struct Giocatore *c);
 void nightClub(struct Giocatore *night, int *addict, int *dead);
 void chooseWork(struct Giocatore *s, int hasDegree, int *worke);
@@ -32,7 +32,7 @@ void letter(struct Giocatore *lett);
 void escape(struct Giocatore *esc, int *sEsca, int *prsE);
 void physicDiseases(struct Giocatore *dis, int *al, int *yPD, int *rlPD);
 void takeCarLicense(struct Giocatore *car, int *cle);
-void hospital(struct Giocatore *osp, struct Nation *nationsName, int *vivo);
+void hospital(struct Giocatore *osp, struct Nation *nationsName, int *vivo, int *sons, int *love, int *sXd, int *controlsDis);
 void prisionGym(struct Giocatore *palgym, int *vivoOmorto, int mortoOvivo);
 void controlYearProximative(struct Giocatore *control, int *patLicense, int *brkGirlProb, int *flong, int *lvc, int *mtb, int *wrk, int *pris, int *al);
 void mafiaLetter(struct Giocatore *maf, int *crime);
@@ -51,10 +51,11 @@ void addToHead(struct Node** head, int *age);
 struct Node* createNode(int *new_expression);
 void freeList(struct Node* head);
 void suicide(int *notVivo);
-void endo(struct Giocatore *endoc);
-void matVen(struct Giocatore *venee);
-void familyDoctor(struct Giocatore *doc);
-void psyco(struct Giocatore *psy);
+void endo(struct Giocatore *endoc, int *viv, int *sem, int *countSon, int *amorCount);
+void matVen(struct Giocatore *venee, int *viv, int *probSxD, int *crtlsDis);
+void familyDoctor(struct Giocatore *doc, int *viv);
+void psyco(struct Giocatore *psy, int *viv);
+void killDiseases(struct Giocatore *kill, int *pDy);
 
 
 #endif
