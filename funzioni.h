@@ -1,7 +1,10 @@
-#ifndef CRIMINI_H
-#define CRIMINI_H
+#ifndef FUNZIONI_H
+#define FUNZIONI_H
 #include "player.h"
 
+void controlQi(struct Giocatore *controlQi, int *controlLife);
+int randomQi(struct Giocatore *qi);
+int getValidInput(int min, int max);
 void identityCard(struct Nation *n, char *nS, char *cS);
 void gym(struct Giocatore *s);
 void righting(struct Giocatore *l);
@@ -10,7 +13,7 @@ void girlResearch(struct Giocatore *g, int *counter, int *son, int *fl, int *sex
 void eat(struct Giocatore *c);
 void nightClub(struct Giocatore *night, int *addict, int *dead);
 void chooseWork(struct Giocatore *s, int hasDegree, int *worke);
-void war(struct Giocatore *w, int militarChoice);
+void war(struct Giocatore *w, int *militarChoice);
 void nuclearProbabilitiesGeneral(struct Giocatore *n, int *weaponN);
 void verifyRetired(struct Giocatore *p, int *year);
 void music(struct Giocatore *m);
@@ -32,12 +35,12 @@ void letter(struct Giocatore *lett);
 void escape(struct Giocatore *esc, int *sEsca, int *prsE);
 void physicDiseases(struct Giocatore *dis, int *al, int *yPD, int *rlPD);
 void takeCarLicense(struct Giocatore *car, int *cle);
-void hospital(struct Giocatore *osp, struct Nation *nationsName, int *vivo, int *sons, int *love, int *sXd, int *controlsDis);
+void hospital(struct Giocatore *osp, struct Nation *nationsName, int *vivo, int *sons, int *love, int *sXd, int *controlsDis, int *mentalDis, int *seme);
 void prisionGym(struct Giocatore *palgym, int *vivoOmorto, int mortoOvivo);
 void controlYearProximative(struct Giocatore *control, int *patLicense, int *brkGirlProb, int *flong, int *lvc, int *mtb, int *wrk, int *pris, int *al);
 void mafiaLetter(struct Giocatore *maf, int *crime);
 void annualNetSons(struct Giocatore *son, int *snc);
-void workAnnualNet(struct Giocatore *netWork, int *krw, int *svdYear);
+void workAnnualNet(struct Giocatore *netWork, int *krw, int *svdYear, int *rtd);
 void college(struct Giocatore *stud, int *uniCt, int *yct, int *dipl);
 void checkWork(struct Giocatore *check, int *workLife, int *probWar, int *prisionCheck, int *probEvent, int *probNuclear, int *weaponNuclearBuild, int *workProbHack);
 void controlHealth(struct Giocatore *healthControl);
@@ -54,8 +57,7 @@ void suicide(int *notVivo);
 void endo(struct Giocatore *endoc, int *viv, int *sem, int *countSon, int *amorCount);
 void matVen(struct Giocatore *venee, int *viv, int *probSxD, int *crtlsDis);
 void familyDoctor(struct Giocatore *doc, int *viv);
-void psyco(struct Giocatore *psy, int *viv);
-void killDiseases(struct Giocatore *kill, int *pDy);
+void psyco(struct Giocatore *psy, int *viv, int *mentalDis);
 
 
 #endif
