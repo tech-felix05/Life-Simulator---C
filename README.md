@@ -1,10 +1,10 @@
-# 🧬 Gioco: A Hardcore Life Simulator in C
+# 🧬 Clife: A Hardcore Life Simulator in C
 
 [![Language: C](https://img.shields.io/badge/Language-C-blue.svg)](https://en.wikipedia.org/wiki/C_(programming_language))
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Status: Active Development](https://img.shields.io/badge/Status-Active_Development-green.svg)]()
 
-**Gioco** is a deep, text-based life simulation engine developed in pure C. Experience a journey from birth to death across 13 different nations, navigating the complexities of health, education, crime, and social status.
+**Clife** is a deep, text-based life simulation engine developed in pure C. Experience a journey from birth to death across 13 different nations, navigating the complexities of health, education, crime, and social status.
 
 > "A project born to explore procedural logic and memory management without the bloat of modern engines."
 
