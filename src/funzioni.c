@@ -5,8 +5,8 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "funzioni.h"
-#include "costanti.h"
+#include "../include/funzioni.h"
+#include "../include/costanti.h"
 
 void controlQi(struct Giocatore *controlQi, int *controlLife)
 {

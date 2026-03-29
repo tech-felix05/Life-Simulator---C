@@ -3,9 +3,9 @@
 #include <string.h>
 #include <time.h>
 
-#include "costanti.h"
-#include "player.h"
-#include "funzioni.h"
+#include "../include/funzioni.h"
+#include "../include/costanti.h"
+#include "../include/player.h"
 
 int main()
 {

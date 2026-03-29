@@ -1,5 +1,6 @@
 #ifndef FUNZIONI_H
 #define FUNZIONI_H
+
 #include "player.h"
 
 void controlQi(struct Giocatore *controlQi, int *controlLife);
