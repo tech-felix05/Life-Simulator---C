@@ -4,83 +4,86 @@
 #include <time.h>
 #include <string.h>
 #include <unistd.h>
-#include <conio.h>
 
 #include "funzioni.h"
 #include "costanti.h"
 
 void controlQi(struct Giocatore *controlQi, int *controlLife)
 {
-    if (controlQi->age >= 14)
-    {
-        controlQi->iQ += 1;
-    }
-    else if (controlQi->age >= 17 && controlQi->age <= 30)
-    {
-        controlQi->iQ += 2;
-    }
-    else if (controlQi->age >= 30 && controlQi->age <= 60)
-    {
-        controlQi->iQ += 1;
-        controlQi->fertility -= 1;
-    }
-    else if (controlQi->age >= 60 && controlQi->age <= 80)
-    {
-        controlQi->iQ -= 1;
-        controlQi->healht -= 3;
-        controlQi->fertility -= 3;
-    }
-    else if (controlQi->age >= 80 && controlQi->age <= 100)
+    if (controlQi->age >= 80)
     {
         controlQi->iQ -= 3;
         controlQi->healht -= 5;
         controlQi->fertility -= 7;
     }
-    else if (controlQi->age >= 100)
+    else if (controlQi->age >= 60)
     {
-        controlQi->iQ -= 4;
-        controlQi->healht  -= 10;
-        controlQi->fertility -= 20;
+        controlQi->iQ -= 1;
+        controlQi->healht -= 3;
+        controlQi->fertility -= 3;
+    }
+    else if (controlQi->age >= 40)
+    {
+        controlQi->fertility -= 1;
+    }
+    else if (controlQi->age >= 30)
+    {
+        controlQi->iQ += 0;
+    }
+    else if (controlQi->age >= 21)
+    {
+        controlQi->iQ += 1;
+    }
+    else if (controlQi->age >= 17)
+    {
+        controlQi->iQ += 2;
+    }
+    else if (controlQi->age >= 14)
+    {
+        controlQi->iQ += 1;
     }
 
-        if (controlQi->healht > 100)
-        {
-            controlQi->healht = 100;
-        }
-        if (controlQi->healht < 0)
-        {
-            controlQi->healht = 0;
-            *controlLife = 0;
-        }
-        if (controlQi->mentalHealth > 100)
-        {
-            controlQi->mentalHealth = 100;
-        }
-        if (controlQi->mentalHealth < 0)
-        {
-            controlQi->mentalHealth = 0;
-        }
-        if (controlQi->fertility > 100)
-        {
-            controlQi->fertility = 100;
-        }
-        if (controlQi->fertility < 0)
-        {
-            controlQi->fertility = 0;
-        }
+    if (controlQi->healht > 100)
+    {
+        controlQi->healht = 100;
+    }
+    if (controlQi->healht < 0)
+    {
+        controlQi->healht = 0;
+        *controlLife = 0;
+    }
+    if (controlQi->mentalHealth > 100)
+    {
+        controlQi->mentalHealth = 100;
+    }
+    if (controlQi->mentalHealth < 0)
+    {
+        controlQi->mentalHealth = 0;
+    }
+    if (controlQi->fertility > 100)
+    {
+        controlQi->fertility = 100;
+    }
+    if (controlQi->fertility < 0)
+    {
+        controlQi->fertility = 0;
+    }
 }
 
 int randomQi(struct Giocatore *qi)
 {
     int iq;
 
-    if ((rand() % 1000) == 0) {
-        iq = 100 + (rand() % 31); 
+    if ((rand() % 1000) == 0)
+    {
+        iq = 100 + (rand() % 31);
         qi->iQ = iq;
-    } 
+
+        printf(CYAN "\n\n[TALENTO RARISSIMO: [IQ] = { %d }]\n\n" RESET, qi->iQ);
+    }
     else
     {
-        iq = 75 + (rand() % 11);
+        iq = 75 + (rand() % 7);
         qi->iQ = iq;
     }
 
@@ -367,18 +370,29 @@ void girlResearch(struct Giocatore *g, int *counter, int *son, int *fl, int *sex
         }
         else if (occ == 3)
         {
-            printf(GREEN BOLD "\n\nHai fatto sesso occasionale.\n\n" RESET);
-            (*fl)++;
-            if (g->fertility >= 50)
+            if (g->fertility > 0)
             {
-                printf(YELLOW BOLD "Hai avuto un figlio!\n" RESET);
-                (*son)++;
-            }
+                printf(GREEN BOLD "\n\nHai fatto sesso occasionale.\n\n" RESET);
 
-            if (*sexualDis == 3)
+                (*fl)++;
+                if (g->fertility >= 50)
+                {
+                    printf(YELLOW BOLD "Hai avuto un figlio!\n" RESET);
+                    (*son)++;
+                }
+
+                if (*sexualDis == 3)
+                {
+                    printf("\n\n[HAI CONTRATTO LA SIFILLIDE | VAI IN OSPEDALE A CURARTI]\n\n"), (*cDs)++;
+                    g->fertility -= 3;
+                }
+            }
+            else
             {
-                printf("\n\n[HAI CONTRATTO LA SIFILLIDE | VAI IN OSPEDALE A CURARTI]\n\n"), (*cDs)++;
-                g->fertility -= 3;
+                printf(RED BOLD "\n\n[DISFUNZIONE ERETTILE]\n\n" RESET);
+                g->happiness -= 3;
+                g->mentalHealth -= 2;
+                g->healht -= 1;
             }
         }
     }
@@ -586,7 +600,7 @@ void chooseWork(struct Giocatore *s, int hasDegree, int *worke)
     printf(GREEN BOLD "Hai iniziato a lavorare come: %s\n" RESET, s->work);
 }
 
-void war(struct Giocatore *w, int *militarChoice)
+void war(struct Giocatore *w, int *militarChoice, int *survived)
 {
     if (*militarChoice == 1)
     {
@@ -616,7 +630,8 @@ void war(struct Giocatore *w, int *militarChoice)
 
         int sniper = 0;
         printf(YELLOW "Scelta: " RESET);
-        scanf("%d", &sniper);
+
+        sniper = getValidInput(1, 2);
 
         if (sniper == 1)
         {
@@ -626,11 +641,12 @@ void war(struct Giocatore *w, int *militarChoice)
         {
             printf(RED BOLD "Il cecchino ti ha preso in testa, sei morto\n" RESET);
             w->healht = 0;
+            *survived = 0;
         }
     }
 }
 
-void nuclearProbabilitiesGeneral(struct Giocatore *n, int *weaponN)
+void nuclearProbabilitiesGeneral(struct Giocatore *n, int *weaponN, int *surviveOrNot)
 {
     int scelta = 0;
     printf(BLUE BOLD "\n--- GIORNATA ALLA CENTRALE NUCLEARE ---\n" RESET);
@@ -677,6 +693,7 @@ void nuclearProbabilitiesGeneral(struct Giocatore *n, int *weaponN)
             {
                 printf(RED BOLD "Ti hanno preso durante la fuga... Non sei sopravvissuto.\n" RESET);
                 n->healht = 0;
+                *surviveOrNot = 0;
             }
         }
         break;
@@ -1167,7 +1184,6 @@ void probDiseases(struct Giocatore *mental, int *rolls, int *dis)
     {
         mental->mentalHealth = 0;
     }
-
 }
 
 void rehab(struct Giocatore *rb, int *add, int *pror, int *ludp)
@@ -2358,75 +2374,74 @@ void letter(struct Giocatore *lett)
     }
 }
 
-void escape(struct Giocatore *esc, int *sEsca, int *prsE)
-{
+void escape(struct Giocatore *esc, int *sEsca, int *prsE, int *yearInPris) {
     int playerX = 1, playerY = 1;
     int guardX = 8, guardY = 8;
     int exitX = 9, exitY = 9;
-    char input;
+    int turni = 0;
     int escaped = 0;
+    char input;
 
     printf(RED BOLD "--- EVASIONE DALLA PRIGIONE ---\n" RESET);
-    printf(BLUE BOLD "Usa W-A-S-D per muoverti. Raggiungi la 'E' senza farti prendere dalla guardia 'G'!\n" RESET);
+    printf(BLUE BOLD "W-A-S-D: Muoviti | E: Uscita | G: Guardia\n" RESET);
+    printf("La guardia si muove ogni 2 tuoi passi. Buona fortuna!\n\n");
 
-    while (!escaped)
-    {
-        for (int y = 0; y < 10; y++)
-        {
-            for (int x = 0; x < 10; x++)
-            {
+    while (!escaped) {
+
+        for (int y = 0; y < 10; y++) {
+            for (int x = 0; x < 10; x++) {
                 if (x == playerX && y == playerY)
-                    printf(" () ");
+                    printf(" () "); // Giocatore
                 else if (x == guardX && y == guardY)
-                    printf(" G ");
+                    printf(" G ");  // Guardia
                 else if (x == exitX && y == exitY)
-                    printf(" E ");
+                    printf(" E ");  // Uscita
                 else
-                    printf(" . ");
+                    printf(" . ");  // Spazio vuoto
             }
             printf("\n");
         }
 
         input = getch();
-        if (input == 'w')
-            playerY--;
+        if (input == 'w' && playerY > 0) playerY--;
+        else if (input == 's' && playerY < 9) playerY++;
+        else if (input == 'a' && playerX > 0) playerX--;
+        else if (input == 'd' && playerX < 9) playerX++;
 
-        if (input == 's')
-            playerY++;
+        if (turni % 2 == 0) {
+    
+            if (guardX != playerX) {
+                guardX += (guardX < playerX) ? 1 : -1;
+            } else if (guardY != playerY) {
+                guardY += (guardY < playerY) ? 1 : -1;
+            }
+        }
+        turni++;
 
-        if (input == 'a')
-            playerX--;
-
-        if (input == 'd')
-            playerX++;
-
-        if (guardX < playerX)
-            guardX++;
-        else if (guardX > playerX)
-            guardX--;
-
-        if (guardY < playerY)
-            guardY++;
-        else if (guardY > playerY)
-            guardY--;
-
-        if (playerX == guardX && playerY == guardY)
-        {
-            printf(RED BOLD "\n*** LA GUARDIA TI HA PRES0! ISOLAMENTO E PENA AUMENTATA NOTERIORMENTE. ***\n" RESET);
+        if (playerX == guardX && playerY == guardY) {
+            printf(RED BOLD "\n*** LA GUARDIA TI HA PRESO! ISOLAMENTO E PENA AUMENTATA. ***\n" RESET);
             (*sEsca) += 10;
             esc->happiness -= 15;
             esc->mentalHealth -= 15;
             break;
         }
-        if (playerX == exitX && playerY == exitY)
-        {
+
+        if (playerX == exitX && playerY == exitY) {
             printf(GREEN BOLD "\n*** SEI LIBERO! EVASIONE RIUSCITA. ***\n" RESET);
             escaped = 1;
             (*prsE) = 0;
+            (*yearInPris) = 0;
+            (*sEsca) = 0;
         }
 
-        system("cls");
+        #ifdef _WIN32
+            system("cls");
+        #else
+            system("clear");
+        #endif
     }
+
+    while (kbhit()) getch();
 }
 
 void physicDiseases(struct Giocatore *dis, int *al, int *yPD, int *rlPD)
@@ -2465,22 +2480,22 @@ void physicDiseases(struct Giocatore *dis, int *al, int *yPD, int *rlPD)
     }
 
     if (dis->healht > 100)
-        {
-            dis->healht = 100;
-        }
-        if (dis->healht < 0)
-        {
-            dis->healht = 0;
-            *al = 0;
-        }
-        if (dis->mentalHealth > 100)
-        {
-            dis->mentalHealth = 100;
-        }
-        if (dis->mentalHealth < 0)
-        {
-            dis->mentalHealth = 0;
-        }
+    {
+        dis->healht = 100;
+    }
+    if (dis->healht < 0)
+    {
+        dis->healht = 0;
+        *al = 0;
+    }
+    if (dis->mentalHealth > 100)
+    {
+        dis->mentalHealth = 100;
+    }
+    if (dis->mentalHealth < 0)
+    {
+        dis->mentalHealth = 0;
+    }
 }
 
 void takeCarLicense(struct Giocatore *car, int *cle)
@@ -2699,10 +2714,13 @@ void annualNetSons(struct Giocatore *son, int *snc)
 
 void workAnnualNet(struct Giocatore *netWork, int *krw, int *svdYear, int *rtd)
 {
-    int temp = 0;
-
     (*svdYear)++;
-    temp = 50 - (*svdYear);
+
+    int temp = 0;
+    int totalYearOfWork = 50 - *svdYear;
+    
+    temp = totalYearOfWork;
+
     printf("\n\n*** LAVORO: [%s]\nANNI RIMANENTI PER PENSIONE: [%d] ***\n\n", netWork->work, temp);
 
     if (temp == 0)
@@ -2728,31 +2746,31 @@ void college(struct Giocatore *stud, int *uniCt, int *yct, int *dipl)
 }
 
 void checkWork(struct Giocatore *check, int *workLife, int *probWar, int *prisionCheck, int *probEvent, int *probNuclear,
-               int *weaponNuclearBuild, int *workProbHack)
+               int *weaponNuclearBuild, int *workProbHack, int *lived)
 {
     if (strcmp(check->work, "Militare") == 0 && check->healht <= 40)
     {
-        printf(RED BOLD "\n\n*** SEI STATO CONGEDATO ***\n" RESET);
+        printf(RED BOLD "\n\n*** SEI STATO CONGEDATO ***\n\n" RESET);
         strcpy(check->work, "Disoccupato");
         *workLife = 0;
     }
     else
     {
-        if (strcmp(check->work, "Militare") == 0 && (*probWar == 1) && (*prisionCheck == 0))
+        if (strcmp(check->work, "Militare") == 0 && *probWar == 1 && *prisionCheck == 0)
         {
             printf(RED BOLD "\n\n*** SEI STATO CHIAMATO IN MISSIONE, [AFGHANISTAN] ***\n" RESET);
-            war(check, probEvent);
+            war(check, probEvent, lived);
 
             if (*probWar == 3)
             {
                 printf(RED BOLD "\n\n*** SEI STATO CHIAMATO IN MISSIONE, [IRAQ] ***\n" RESET);
-                war(check, probEvent);
+                war(check, probEvent, lived);
             }
 
             if (*probWar == 10)
             {
                 printf(RED BOLD "\n\n*** SEI STATO CHIAMATO IN MISSIONE, [DAGHESTAN] ***\n" RESET);
-                war(check, probEvent);
+                war(check, probEvent, lived);
             }
         }
 
@@ -2765,7 +2783,7 @@ void checkWork(struct Giocatore *check, int *workLife, int *probWar, int *prisio
         {
             if (strcmp(check->work, "Ingegnere Nuc.") == 0 && (*probNuclear) == 2 && (*prisionCheck == 0))
             {
-                nuclearProbabilitiesGeneral(check, probNuclear);
+                nuclearProbabilitiesGeneral(check, probNuclear, lived);
             }
         }
 
@@ -2809,7 +2827,7 @@ void controlHealth(struct Giocatore *healthControl)
     }
     if (healthControl->happiness < 0)
     {
-        healthControl->happiness = 0; 
+        healthControl->happiness = 0;
     }
     if (healthControl->mentalHealth > 100)
     {
@@ -2823,7 +2841,6 @@ void controlHealth(struct Giocatore *healthControl)
     {
         healthControl->iQ += 1;
     }
-   
 }
 
 void ludo(struct Giocatore *ludp)
@@ -2831,6 +2848,8 @@ void ludo(struct Giocatore *ludp)
 
     ludp->currentPortfolio -= 1000;
     ludp->mentalHealth -= 3;
+
+    printf(RED "\n\n{ STAI DIVENTANDO LUDOPATICO }\n\n" RESET);
 }
 
 void controlMentalDiseases(struct Giocatore *controlMtb)
@@ -2838,6 +2857,7 @@ void controlMentalDiseases(struct Giocatore *controlMtb)
 
     controlMtb->happiness -= 5;
     controlMtb->mentalHealth -= 2;
+    printf(CYAN "\n\n{ STAI PASSANDO UN PERIODO BUIO | VAI DALLO PSICHIATRA }\n\n" RESET);
 }
 
 void mentalDis(struct Giocatore *mtbControl)
@@ -2939,7 +2959,6 @@ void workOrCollege(struct Giocatore *workOrColl, int *countUni, int *yearCurr, i
         {
             chooseWork(workOrColl, 0, workkk);
             *workkk = 1;
-            *yearsSvd = 0;
         }
     }
 }
@@ -3059,14 +3078,19 @@ void endo(struct Giocatore *endoc, int *viv, int *sem, int *countSon, int *amorC
     int medicChoice = 0;
 
     printf("\n\n[CONTROLLO]\n\n");
-    printf("1.Dona seme\n");
-    printf("2.Paga una surrogata\n");
-    printf("3.Congela seme\n4.Usa seme congelato\n\nScelta: ");
+    printf("1. Dona seme\n");
+    printf("2. Paga una surrogata\n");
+    printf("3. Congela seme\n4.Usa seme congelato\n\nScelta: ");
     scanf("%d", &medicChoice);
 
     switch (medicChoice)
     {
     case 1:
+
+      if (endoc->fertility <= 0)
+      {
+        printf(CYAN "\n\n[NON SEI IN GRADO DI RAGGIUNGERE ECCITAMENTO] - [DISFUNZIONE ERETTILE]\n\n" RESET);
+      }
 
         if (endoc->age >= 18)
         {
@@ -3115,6 +3139,10 @@ void endo(struct Giocatore *endoc, int *viv, int *sem, int *countSon, int *amorC
 
     case 2:
 
+     if (endoc->fertility <= 0)
+     {
+        printf(CYAN "\n\n[NON SEI IN GRADO DI RAGGIUNGERE ECCITAMENTO] - [DISFUNZIONE ERETTILE]\n\n" RESET);
+     }
         if (endoc->age >= 18 && endoc->currentPortfolio >= 3000)
         {
             int surrogate = 0;
@@ -3197,12 +3225,11 @@ void endo(struct Giocatore *endoc, int *viv, int *sem, int *countSon, int *amorC
                 printf(GREEN "\n\n[SEME CONGELATO]\n\n" RESET);
                 endoc->currentPortfolio -= 1500;
                 (*sem) += 1;
-            
             }
-        }
-        else
-        {
-            printf(RED "\n\n[NON PUOI ANCORA]\n\n" RESET);
+            else
+            {
+               printf(RED "\n\n[NON PUOI ANCORA]\n\n" RESET);
+            }
         }
 
         break;
@@ -3300,21 +3327,54 @@ void familyDoctor(struct Giocatore *doc, int *viv)
 
         if (doc->healht < 30)
         {
-            printf(RED "Il dottore dice: 'La tua salute fisica è molto bassa! Devi curarti urgentemente!'\n" RESET);
+            printf(RED "Il dottore dice: 'La tua salute fisica si sta abbassando molto! Devi curarti urgentemente!'\n" RESET);
         }
         else if (doc->healht < 60)
         {
-            printf(YELLOW "Il dottore dice: 'Dovresti fare più attività fisica e mangiare meglio.'\n" RESET);
+            printf(YELLOW "Il dottore dice: 'Dovresti fare molto sport.'\n" RESET);
         }
         else
         {
-            printf(GREEN "Il dottore dice: 'Sei in buona salute! Continua così.'\n" RESET);
+            printf(GREEN "Il dottore dice: 'Sei in buona salute!.'\n" RESET);
         }
 
-        if (doc->currentPortfolio >= 500 && doc->healht < 80)
+        if (doc->age < 18)
+        {
+            printf(BLUE "\nVuoi fare una cura completa? (costa GRATIS)\n" RESET);
+            printf("1. Sì | 2. No\nScelta: ");
+
+            int sceltaCura = getValidInput(1, 2);
+
+            if (sceltaCura == 1)
+            {
+                doc->healht += 20;
+                if (doc->healht > 100)
+                    doc->healht = 100;
+                printf(GREEN "\n*** TI SEI CURATO! Salute: +20 ***\n\n" RESET);
+
+                if (doc->healht > 100)
+                {
+                    doc->healht = 100;
+                }
+                if (doc->mentalHealth > 100)
+                {
+                    doc->mentalHealth = 100;
+                }
+                if (doc->happiness > 100)
+                {
+                    doc->happiness = 100;
+                }
+                if (doc->fertility > 100)
+                {
+                    doc->fertility = 100;
+                }
+            }
+        }
+
+        else if (doc->age > 18 && doc->currentPortfolio >= 500 && doc->healht < 80)
         {
             printf(BLUE "\nVuoi fare una cura completa? (costa 500$)\n" RESET);
-            printf("1. Sì | 2. No\nScelta: ");
+            printf("1. Si | 2. No\nScelta: ");
 
             int sceltaCura = getValidInput(1, 2);
 
@@ -3437,32 +3497,89 @@ void psyco(struct Giocatore *psy, int *viv, int *mentalDis)
         int hasTreatmentOptions = 0;
         int optionNumber = 1;
 
-        if (*mentalDis > 0)
+        if (*mentalDis > 0 && psy->age < 18)
         {
-            printf("%d. Cura malattie mentali (1500$) - CONSIGLIATO\n", optionNumber);
+            printf("%d. Cura malattie mentali (GRATIS) - CONSIGLIATO\n", optionNumber);
+            hasTreatmentOptions = 1;
+            optionNumber++;
+        }
+        else if (psy->mentalHealth < 70 && psy->age < 18)
+        {
+            printf("%d. Terapia psicologica (GRATIS)\n", optionNumber);
+            hasTreatmentOptions = 1;
+            optionNumber++;
+        }
+        else if (psy->mentalHealth < 50 && psy->age < 18)
+        {
+            printf("%d. Prescrizione antidepressivi (GRATIS)\n", optionNumber);
+            hasTreatmentOptions = 1;
+            optionNumber++;
+        }
+        else if (psy->happiness < 50 && psy->age < 18)
+        {
+            printf("%d. Seduta di supporto (GRATIS)\n", optionNumber);
             hasTreatmentOptions = 1;
             optionNumber++;
         }
 
-        if (psy->mentalHealth < 70)
+        else if (*mentalDis > 0 && psy->age > 18)
         {
-            printf("%d. Terapia psicologica (800$)\n", optionNumber);
-            hasTreatmentOptions = 1;
-            optionNumber++;
+            if (psy->currentPortfolio >= 1500)
+            {
+                printf("%d. Cura malattie mentali (1500$) - CONSIGLIATO\n", optionNumber);
+                hasTreatmentOptions = 1;
+                optionNumber++;
+                psy->currentPortfolio -= 1500;
+            }
+            else
+            {
+                printf(RED "\n\n[NON HAI ABBASTANZA SOLDI]\n\n" RESET);
+            }
         }
 
-        if (psy->mentalHealth < 50)
+        else if (psy->mentalHealth < 70 && psy->age > 18)
         {
-            printf("%d. Prescrizione antidepressivi (200$)\n", optionNumber);
-            hasTreatmentOptions = 1;
-            optionNumber++;
+            if (psy->currentPortfolio >= 800)
+            {
+                printf("%d. Terapia psicologica (800$)\n", optionNumber);
+                hasTreatmentOptions = 1;
+                optionNumber++;
+                psy->currentPortfolio -= 800;
+            }
+            else
+            {
+                printf(RED "\n\n[NON HAI ABBASTANZA SOLDI]\n\n" RESET);
+            }
         }
 
-        if (psy->happiness < 50)
+        else if (psy->mentalHealth < 50 && psy->age > 18)
         {
-            printf("%d. Seduta di supporto (300$)\n", optionNumber);
-            hasTreatmentOptions = 1;
-            optionNumber++;
+            if (psy->currentPortfolio >= 200)
+            {
+                printf("%d. Prescrizione antidepressivi (200$)\n", optionNumber);
+                hasTreatmentOptions = 1;
+                optionNumber++;
+                psy->currentPortfolio -= 200;
+            }
+            else
+            {
+                printf(RED "\n\n[NON HAI ABBASTANZA SOLDI]\n\n" RESET);
+            }
+        }
+
+        else if (psy->happiness < 50 && psy->age > 18)
+        {
+            if (psy->currentPortfolio >= 300)
+            {
+                printf("%d. Seduta di supporto (300$)\n", optionNumber);
+                hasTreatmentOptions = 1;
+                optionNumber++;
+                psy->currentPortfolio -= 300;
+            }
+            else
+            {
+                printf(RED "\n\n[NON HAI ABBASTANZA SOLDI]\n\n" RESET);
+            }
         }
 
         printf("%d. Esci\n", optionNumber);
@@ -3483,51 +3600,44 @@ void psyco(struct Giocatore *psy, int *viv, int *mentalDis)
         {
             if (scelta == currentOption)
             {
-                if (psy->currentPortfolio >= 1500)
+                printf(GREEN "\n\n*** INIZIO TRATTAMENTO PER MALATTIE MENTALI ***\n\n" RESET);
+
+                int total = 100;
+                int bar = 20;
+
+                for (int i = 0; i <= total; i += 5)
                 {
-                    printf(GREEN "\n\n*** INIZIO TRATTAMENTO PER MALATTIE MENTALI ***\n\n" RESET);
+                    float progress = (float)i / total;
+                    int filled = progress * bar;
 
-                    int total = 100;
-                    int bar = 20;
-
-                    for (int i = 0; i <= total; i += 5)
+                    printf("\rTrattamento in corso: [");
+                    for (int j = 0; j < bar; j++)
                     {
-                        float progress = (float)i / total;
-                        int filled = progress * bar;
-
-                        printf("\rTrattamento in corso: [");
-                        for (int j = 0; j < bar; j++)
-                        {
-                            if (j < filled)
-                                printf(">");
-                            else
-                                printf("<");
-                        }
-                        printf("] %d%%", i);
-                        fflush(stdout);
-                        usleep(100000);
+                        if (j < filled)
+                            printf(">");
+                        else
+                            printf("<");
                     }
-                    printf("\n\n");
-
-                    psy->currentPortfolio -= 1500;
-                    *mentalDis = 0;
-                    psy->mentalHealth += 40;
-                    psy->happiness += 20;
-
-                    if (psy->mentalHealth > 100)
-                        psy->mentalHealth = 100;
-                    if (psy->happiness > 100)
-                        psy->happiness = 100;
-
-                    printf(GREEN BOLD "*** TRATTAMENTO COMPLETATO CON SUCCESSO! ***\n" RESET);
-                    printf(GREEN "[+] Malattie mentali curate!\n" RESET);
-                    printf("[+] Salute Mentale: +40 (ora: %d)\n", psy->mentalHealth);
-                    printf("[+] Felicità: +20 (ora: %d)\n\n", psy->happiness);
+                    printf("] %d%%", i);
+                    fflush(stdout);
+                    usleep(100000);
                 }
-                else
-                {
-                    printf(RED "\n[FONDI INSUFFICIENTI] Servono 1500$. Hai solo %.2f$\n\n" RESET, psy->currentPortfolio);
-                }
+                printf("\n\n");
+
+                *mentalDis = 0;
+                psy->mentalHealth += 40;
+                psy->happiness += 20;
+
+                if (psy->mentalHealth > 100)
+                    psy->mentalHealth = 100;
+                if (psy->happiness > 100)
+                    psy->happiness = 100;
+
+                printf(YELLOW "*** TRATTAMENTO COMPLETATO CON SUCCESSO! ***\n\n" RESET);
+                printf(GREEN "[+] Malattie mentali curate!\n" RESET);
+                printf(GREEN "[+] Salute Mentale: +40 (ora: %d)\n" RESET, psy->mentalHealth);
+                printf(GREEN "[+] Happiness: +20 (ora: %d)\n\n" RESET, psy->happiness);
+
                 return;
             }
             currentOption++;
@@ -3537,28 +3647,21 @@ void psyco(struct Giocatore *psy, int *viv, int *mentalDis)
         {
             if (scelta == currentOption)
             {
-                if (psy->currentPortfolio >= 800)
-                {
-                    printf(GREEN "\n*** INIZIO TERAPIA PSICOLOGICA ***\n" RESET);
-                    printf("Lo psichiatra ti ascolta e ti aiuta a elaborare i tuoi problemi...\n\n");
+                printf(GREEN "\n*** INIZIO TERAPIA PSICOLOGICA ***\n" RESET);
+                printf("Lo psichiatra ti ascolta e ti aiuta a elaborare i tuoi problemi...\n\n");
 
-                    psy->currentPortfolio -= 800;
-                    psy->mentalHealth += 25;
-                    psy->happiness += 15;
+                psy->mentalHealth += 25;
+                psy->happiness += 15;
 
-                    if (psy->mentalHealth > 100)
-                        psy->mentalHealth = 100;
-                    if (psy->happiness > 100)
-                        psy->happiness = 100;
+                if (psy->mentalHealth > 100)
+                    psy->mentalHealth = 100;
+                if (psy->happiness > 100)
+                    psy->happiness = 100;
 
-                    printf(GREEN "*** TERAPIA COMPLETATA! ***\n" RESET);
-                    printf("Salute Mentale: +25 (ora: %d)\n", psy->mentalHealth);
-                    printf("Felicità: +15 (ora: %d)\n\n", psy->happiness);
-                }
-                else
-                {
-                    printf(RED "\n[FONDI INSUFFICIENTI] Servono 800$. Hai solo %.2f$\n\n" RESET, psy->currentPortfolio);
-                }
+                printf(YELLOW "*** TERAPIA COMPLETATA! ***\n\n" RESET);
+                printf(GREEN "[+] Salute Mentale: +25 (ora: %d)\n", psy->mentalHealth);
+                printf(GREEN "[+] Happiness: +15 (ora: %d)\n\n", psy->happiness);
+
                 return;
             }
             currentOption++;
@@ -3568,24 +3671,17 @@ void psyco(struct Giocatore *psy, int *viv, int *mentalDis)
         {
             if (scelta == currentOption)
             {
-                if (psy->currentPortfolio >= 200)
-                {
-                    printf(YELLOW "\n*** PRESCRIZIONE ANTIDEPRESSIVI ***\n" RESET);
-                    printf("Lo psichiatra ti prescrive degli antidepressivi da assumere per 30 giorni...\n\n");
+                printf(YELLOW "\n*** PRESCRIZIONE ANTIDEPRESSIVI ***\n" RESET);
+                printf("Lo psichiatra ti prescrive degli antidepressivi da assumere per 30 giorni...\n\n");
 
-                    psy->currentPortfolio -= 200;
-                    psy->mentalHealth += 15;
+                psy->mentalHealth += 15;
 
-                    if (psy->mentalHealth > 100)
-                        psy->mentalHealth = 100;
+                if (psy->mentalHealth > 100)
+                    psy->mentalHealth = 100;
 
-                    printf(GREEN "*** Stai assumendo antidepressivi ***\n" RESET);
-                    printf("Salute Mentale: +15 (ora: %d)\n\n", psy->mentalHealth);
-                }
-                else
-                {
-                    printf(RED "\n[FONDI INSUFFICIENTI] Servono 200$. Hai solo %.2f$\n\n" RESET, psy->currentPortfolio);
-                }
+                printf(YELLOW "*** Stai assumendo antidepressivi ***\n\n" RESET);
+                printf(GREEN "[+] Salute Mentale: +15 (ora: %d)\n\n" RESET, psy->mentalHealth);
+
                 return;
             }
             currentOption++;
@@ -3595,45 +3691,38 @@ void psyco(struct Giocatore *psy, int *viv, int *mentalDis)
         {
             if (scelta == currentOption)
             {
-                if (psy->currentPortfolio >= 300)
+                printf(BLUE "\n*** SEDUTA DI SUPPORTO ***\n" RESET);
+                printf("Lo psichiatra ti aiuta a vedere le cose in prospettiva...\n\n");
+
+                psy->happiness += 20;
+                psy->mentalHealth += 10;
+
+                if (psy->happiness > 100)
+                    psy->happiness = 100;
+                if (psy->mentalHealth > 100)
+                    psy->mentalHealth = 100;
+
+                printf(GREEN "*** SEDUTA COMPLETATA! ***\n\n" RESET);
+                printf(GREEN "[+] Happiness +20 (ora: %d)\n" RESET, psy->happiness);
+                printf(GREEN "[+] Salute Mentale: +10 (ora: %d)\n\n" RESET, psy->mentalHealth);
+
+                if (psy->healht > 100)
                 {
-                    printf(BLUE "\n*** SEDUTA DI SUPPORTO ***\n" RESET);
-                    printf("Lo psichiatra ti aiuta a vedere le cose in prospettiva...\n\n");
-
-                    psy->currentPortfolio -= 300;
-                    psy->happiness += 20;
-                    psy->mentalHealth += 10;
-
-                    if (psy->happiness > 100)
-                        psy->happiness = 100;
-                    if (psy->mentalHealth > 100)
-                        psy->mentalHealth = 100;
-
-                    printf(GREEN "*** SEDUTA COMPLETATA! ***\n" RESET);
-                    printf("Felicità: +20 (ora: %d)\n", psy->happiness);
-                    printf("Salute Mentale: +10 (ora: %d)\n\n", psy->mentalHealth);
-
-                    if (psy->healht > 100)
-                    {
-                        psy->healht = 100;
-                    }
-                    if (psy->mentalHealth > 100)
-                    {
-                        psy->mentalHealth = 100;
-                    }
-                    if (psy->happiness > 100)
-                    {
-                        psy->happiness = 100;
-                    }
-                    if (psy->fertility > 100)
-                    {
-                        psy->fertility = 100;
-                    }
+                    psy->healht = 100;
                 }
-                else
+                if (psy->mentalHealth > 100)
                 {
-                    printf(RED "\n[FONDI INSUFFICIENTI] Servono 300$. Hai solo %.2f$\n\n" RESET, psy->currentPortfolio);
+                    psy->mentalHealth = 100;
                 }
+                if (psy->happiness > 100)
+                {
+                    psy->happiness = 100;
+                }
+                if (psy->fertility > 100)
+                {
+                    psy->fertility = 100;
+                }
+
                 return;
             }
             currentOption++;
@@ -3643,5 +3732,40 @@ void psyco(struct Giocatore *psy, int *viv, int *mentalDis)
         {
             printf(BLUE "\nHai deciso di non fare nessun trattamento.\n\n" RESET);
         }
+    }
+}
+
+void controlKilledPeopleAndMentalHealth(struct Giocatore *kill, int *mentalDeas, int *kd, int *criminalRat)
+{
+
+    if (*kd >= 10)
+    {
+        kill->mentalHealth -= 10;
+        *mentalDeas += 7;
+    }
+    else if (*criminalRat >= 10)
+    {
+        kill->mentalHealth -= 4;
+        *mentalDeas += 2;
+    }
+    else if (*kd >= 5)
+    {
+        kill->mentalHealth -= 5;
+        *mentalDeas += 6;
+    }
+    else if (*criminalRat >= 5)
+    {
+        kill->mentalHealth -= 3;
+        *mentalDeas += 2;
+    }
+    else if (*kd >= 1)
+    {
+        kill->mentalHealth -= 4;
+        *mentalDeas += 3;
+    }
+    else if (*criminalRat >= 1)
+    {
+        kill->mentalHealth -= 2;
+        *mentalDeas += 1;
     }
 }

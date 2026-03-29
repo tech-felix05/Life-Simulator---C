@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <conio.h>
 
 #include "costanti.h"
 #include "player.h"
@@ -99,26 +98,25 @@ int main()
 
         controlHealth(self);
         controlQi(self, &alive);
+        controlKilledPeopleAndMentalHealth(self, &mentalDiseases, &killedPeople, &criminalRating);
 
         if (alive == 1)
         {
-            if (warProbabilies == 3 && strcmp(self[0].work, "Militare") == 0)
+            if (alive == 1 && self[0].fertility <= 0)
             {
-                war(self, &warProbabilies);
+                printf(YELLOW "\n\n[SOFFRI DI DISFUNZIONE ERETTILE]\n\n" RESET);
+                self[0].happiness -= 3;
+                self[0].healht -= 2;
+            }
+            if (work == 1 && prision == 0)
+            {
+                checkWork(self, &work, &warProbabilies, &prision, &event, &nuclearProbability, &nuclearWeaponBuild, &hackWorkProb, &alive);
             }
             if (probPhysicDiseases <= 20)
             {
                 physicDiseases(self, &alive, &yearsOfPhysicDiseases, &rollPhysicDiseases);
             }
-            if (hackWorkProb == 2 && strcmp(self[0].work, "Etichal Hacker") == 0)
-            {
-                hackingProbabilities(self);
-            }
-            if (strcmp(self[0].work, "Ingegnere Nuc.") == 0)
-            {
-                nuclearProbabilitiesGeneral(self, &nuclearWeaponBuild);
-            }
-            if (criminal >= 50 && self[0].age > 15)
+            if (criminal == 50 && self[0].age > 15)
             {
                 mafiaLetter(self, &criminal);
             }
@@ -138,7 +136,7 @@ int main()
             if (retired == 1 && prision == 0)
             {
                 verifyRetired(self, &servedYears);
-                printf("\n\n*** PENSIONE: [%.2f] \n\n", self[0].currentPortfolio);
+                printf("\n\n*** PENSIONE: [%.2f] \n\n", self[0].salary);
             }
             if (uniCount == 0 && prision == 0 && self[0].age >= 18 && retired == 0)
             {
@@ -149,7 +147,7 @@ int main()
                 printf(RED "\n\n*** SMESSO DI FREQUENTARE, SEI IN PRIGIONE ***\n\n" RESET);
                 uniCount = 0;
             }
-            if (diplomated == 1 && work == 0)
+            if (diplomated == 1 && work == 0 && retired == 0)
             {
                 chooseWork(self, 1, &work);
             }
@@ -217,6 +215,11 @@ int main()
                 if (self[0].fertility <= 30)
                 {
                     printf(CYAN "\n\n[IL TUO FUNZIONAMENTO SESSUALE SI STA ABBASSANDO]\n\n" RESET);
+                }
+
+                if (self[0].fertility <= 0)
+                {
+                    printf(RED "\n\n[DISFUNZIONE ERETTILE]\n\n" RESET);
                 }
             }
         }
@@ -362,7 +365,10 @@ int main()
                 break;
 
             case 17:
-                self[0].age++;
+                printf(GREEN "\n\n[HAI DECISO DI RIPOSARE]\n\n" RESET);
+
+                controlQi(self, &alive);
+                
                 break;
 
             default:
@@ -392,23 +398,8 @@ int main()
         while (prision == 1 && alive == 1)
         {
 
-            if (self[0].healht > 100)
-            {
-                self[0].healht = 100;
-            }
-            if (self[0].healht < 0)
-            {
-                self[0].healht = 0;
-                alive = 0;
-            }
-            if (self[0].mentalHealth > 100)
-            {
-                self[0].mentalHealth = 100;
-            }
-            if (self[0].mentalHealth < 0)
-            {
-                self[0].mentalHealth = 0;
-            }
+            controlQi(self, &alive);
+            controlKilledPeopleAndMentalHealth(self, &mentalDiseases, &killedPeople, &criminalRating);
 
             int choice = 0;
             int prisionGymProbAliveOrDead = (rand() % 4) + 1;
@@ -419,14 +410,11 @@ int main()
             if (alive == 1)
             {
 
-                printf("1.Palestra | 2.Sentenza | 3.Visita coniugale | 4.Spedisci lettera| 5.Tenta la fuga | 6.Picchia | 7.Infermieria | 8.Suicidio\n");
+                printf("1.Palestra | 2.Sentenza | 3.Visita coniugale | 4.Spedisci lettera| 5.Tenta la fuga | 6.Picchia | 7.Infermieria | 8.Suicidio\n\n");
                 printf("Scelta: ");
 
-                int choice = getValidInput(1, 8);
+                choice = getValidInput(1, 8);
             }
-
-            while (getchar() != '\n')
-                ;
 
             switch (choice)
             {
@@ -443,7 +431,7 @@ int main()
                 letter(self);
                 break;
             case 5:
-                escape(self, &prisProb, &prision);
+                escape(self, &prisProb, &prision, &yearsInPrision);
                 break;
             case 6:
                 mess(self, &prisProb);

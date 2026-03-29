@@ -13,8 +13,8 @@ void girlResearch(struct Giocatore *g, int *counter, int *son, int *fl, int *sex
 void eat(struct Giocatore *c);
 void nightClub(struct Giocatore *night, int *addict, int *dead);
 void chooseWork(struct Giocatore *s, int hasDegree, int *worke);
-void war(struct Giocatore *w, int *militarChoice);
-void nuclearProbabilitiesGeneral(struct Giocatore *n, int *weaponN);
+void war(struct Giocatore *w, int *militarChoice, int *survived);
+void nuclearProbabilitiesGeneral(struct Giocatore *n, int *weaponN, int *surviveOrNot);
 void verifyRetired(struct Giocatore *p, int *year);
 void music(struct Giocatore *m);
 void timeWithFriends(struct Giocatore *f, int *ex);
@@ -32,7 +32,7 @@ void medicJail(struct Giocatore *medic);
 void mess(struct Giocatore *sqeeze, int *pseNt);
 void coniugalVisit(struct Giocatore *coniug, int *girl);
 void letter(struct Giocatore *lett);
-void escape(struct Giocatore *esc, int *sEsca, int *prsE);
+void escape(struct Giocatore *esc, int *sEsca, int *prsE, int *yearInPris);
 void physicDiseases(struct Giocatore *dis, int *al, int *yPD, int *rlPD);
 void takeCarLicense(struct Giocatore *car, int *cle);
 void hospital(struct Giocatore *osp, struct Nation *nationsName, int *vivo, int *sons, int *love, int *sXd, int *controlsDis, int *mentalDis, int *seme);
@@ -42,7 +42,7 @@ void mafiaLetter(struct Giocatore *maf, int *crime);
 void annualNetSons(struct Giocatore *son, int *snc);
 void workAnnualNet(struct Giocatore *netWork, int *krw, int *svdYear, int *rtd);
 void college(struct Giocatore *stud, int *uniCt, int *yct, int *dipl);
-void checkWork(struct Giocatore *check, int *workLife, int *probWar, int *prisionCheck, int *probEvent, int *probNuclear, int *weaponNuclearBuild, int *workProbHack);
+void checkWork(struct Giocatore *check, int *workLife, int *probWar, int *prisionCheck, int *probEvent, int *probNuclear, int *weaponNuclearBuild, int *workProbHack, int *lived);
 void controlHealth(struct Giocatore *healthControl);
 void ludo(struct Giocatore *ludp);
 void controlMentalDiseases(struct Giocatore *controlMtb);
@@ -58,6 +58,7 @@ void endo(struct Giocatore *endoc, int *viv, int *sem, int *countSon, int *amorC
 void matVen(struct Giocatore *venee, int *viv, int *probSxD, int *crtlsDis);
 void familyDoctor(struct Giocatore *doc, int *viv);
 void psyco(struct Giocatore *psy, int *viv, int *mentalDis);
+void controlKilledPeopleAndMentalHealth(struct Giocatore *kill, int *mentalDeas, int *kd, int *criminalRat);
 
 
 #endif
